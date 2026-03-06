@@ -391,6 +391,18 @@
       gap: 10px;
       margin-bottom: 4px;
     }
+    @keyframes flashUp {
+      0%   { background: rgba(0,255,136,0.35); border-radius:3px; }
+      100% { background: transparent; }
+    }
+    @keyframes flashDn {
+      0%   { background: rgba(255,59,48,0.35); border-radius:3px; }
+      100% { background: transparent; }
+    }
+    .flash-up { animation: flashUp 0.6s ease-out forwards; }
+    .flash-dn { animation: flashDn 0.6s ease-out forwards; }
+    .clr-dn   { color: #ff3b30 !important; }
+
     .pos-price {
       font-family: 'Orbitron', monospace;
       font-size: 32px;
@@ -442,6 +454,66 @@
       border-left: 2px solid var(--border-0);
       padding-left: 12px;
     }
+
+    .pos-name-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--text-3);
+      text-transform: uppercase;
+    }
+    .pos-label-row { margin: 6px 0 2px; }
+
+    .conv-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+    .conv-high {
+      background: rgba(0,212,200,0.08);
+      color: var(--teal);
+      border: 1px solid rgba(0,212,200,0.22);
+    }
+    .conv-med {
+      background: rgba(255,75,138,0.08);
+      color: var(--pink);
+      border: 1px solid rgba(255,75,138,0.22);
+    }
+
+    .pos-block-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .block-tag {
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      padding: 6px 16px;
+    }
+    .block-crypto {
+      background: rgba(0,212,200,0.06);
+      border: 1px solid rgba(0,212,200,0.25);
+      color: var(--teal);
+    }
+    .block-eq {
+      background: rgba(155,126,200,0.06);
+      border: 1px solid rgba(155,126,200,0.25);
+      color: var(--purple-bright);
+    }
+    .block-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--text-3);
+    }
+    .pos-grid-crypto { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+    .pos-grid-eq { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
 
     /* ── MODELS ── */
     .models-s { background: linear-gradient(180deg, var(--bg-0) 0%, #0A0A15 100%); }
@@ -894,6 +966,13 @@
 
 <!-- POSITIONS -->
 <section class="s" id="positions">
+  <!-- LIVE PRICE ORACLE BAR -->
+  <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;padding:0 0 18px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">
+    <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 8px #00ff88;animation:pulse 2s infinite;"></span>
+    <span style="color:#00ff88;letter-spacing:.1em;font-weight:600;">LIVE PRICES</span>
+    <span style="opacity:.4;">·</span>
+    <span id="price-timestamp" style="opacity:.55;">fetching...</span>
+  </div>
   <div class="s-head">
     <div>
       <div class="s-eyebrow">Live Signals</div>
@@ -902,129 +981,308 @@
     <div class="s-num">01</div>
   </div>
 
-  <div class="pos-grid">
+  <!-- CRYPTO BLOCK -->
+  <div class="pos-block-label rev">
+    <span class="block-tag block-crypto">DIGITAL ASSETS</span>
+    <span class="block-count">7 positions</span>
+  </div>
+  <div class="pos-grid pos-grid-crypto">
 
-    <!-- BTC LONG -->
     <div class="pos-card long rev">
       <div class="pos-card-head">
-        <div class="pos-ticker">BTC / USD</div>
-        <span class="badge b-long">LONG</span>
+        <div class="pos-ticker">BTC</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
       </div>
       <div class="pos-price-row">
-        <div class="pos-price clr-up">$72,340</div>
-        <span class="pos-chg clr-up">+2.31%</span>
+        <div id="price-BTC" class="pos-price clr-up">$72,500</div>
+        <span id="chg-BTC" class="pos-chg clr-up">+2.61%</span>
       </div>
-      <div class="sparkline-wrap">
-        <svg width="100%" height="40" viewBox="0 0 260 40" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(0,255,136,0.18)"/>
-              <stop offset="100%" stop-color="rgba(0,255,136,0)"/>
-            </linearGradient>
-          </defs>
-          <polyline points="0,36 22,31 44,33 66,22 88,27 110,19 132,24 154,13 176,17 198,9 220,12 242,7 260,5"
-            fill="none" stroke="rgba(0,255,136,0.7)" stroke-width="1.5"/>
-          <polygon points="0,36 22,31 44,33 66,22 88,27 110,19 132,24 154,13 176,17 198,9 220,12 242,7 260,5 260,40 0,40"
-            fill="url(#sg1)"/>
-        </svg>
-      </div>
-      <div class="pos-meta">
-        <div><div class="meta-k">Entry</div><div class="meta-v">$61,200</div></div>
-        <div><div class="meta-k">Target</div><div class="meta-v">$95,000</div></div>
-        <div><div class="meta-k">Stop</div><div class="meta-v">$58,000</div></div>
-        <div><div class="meta-k">P&amp;L</div><div class="meta-v clr-up">+18.2%</div></div>
-      </div>
-      <p class="pos-thesis">"Bottom confirmation via KOSPI rotation signal + US Strategic Reserve structural bid. Recovery thesis intact above $69K. Weekly close above $83,737 = confirmed reversal."</p>
+      <div class="pos-label-row"><span class="pos-name-lbl">Bitcoin</span></div>
+      <p class="pos-thesis">"The foundational asset. US Strategic Bitcoin Reserve is a structural bid that didn't exist in any prior cycle. KOSPI rotation thesis live — $13.7B in EM outflows finding a new home. Weekly close above $83,737 = confirmed reversal."</p>
     </div>
 
-    <!-- COIN LONG -->
     <div class="pos-card long rev d1">
       <div class="pos-card-head">
-        <div class="pos-ticker">COIN</div>
-        <span class="badge b-long">LONG</span>
+        <div class="pos-ticker">ETH</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
       </div>
       <div class="pos-price-row">
-        <div class="pos-price clr-up">$210</div>
-        <span class="pos-chg clr-up">+14.6%</span>
+        <div id="price-ETH" class="pos-price clr-up">$1,997</div>
+        <span id="chg-ETH" class="pos-chg clr-up">+2.55%</span>
       </div>
-      <div class="sparkline-wrap">
-        <svg width="100%" height="40" viewBox="0 0 260 40" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(0,255,136,0.18)"/>
-              <stop offset="100%" stop-color="rgba(0,255,136,0)"/>
-            </linearGradient>
-          </defs>
-          <polyline points="0,38 26,36 52,37 78,31 104,33 130,28 156,23 182,20 208,14 234,10 260,6"
-            fill="none" stroke="rgba(0,255,136,0.7)" stroke-width="1.5"/>
-          <polygon points="0,38 26,36 52,37 78,31 104,33 130,28 156,23 182,20 208,14 234,10 260,6 260,40 0,40"
-            fill="url(#sg2)"/>
-        </svg>
-      </div>
-      <div class="pos-meta">
-        <div><div class="meta-k">Entry</div><div class="meta-v">$155</div></div>
-        <div><div class="meta-k">Target</div><div class="meta-v">$280</div></div>
-        <div><div class="meta-k">Stop</div><div class="meta-v">$130</div></div>
-        <div><div class="meta-k">P&amp;L</div><div class="meta-v clr-up">+35.5%</div></div>
-      </div>
-      <p class="pos-thesis">"Infra play. Custody for 80%+ of US spot ETF assets. FY25 revenue $7.18B. $11.3B war chest. Shifts from high-fee broker to low-fee, high-volume utility are mispriced by market."</p>
+      <div class="pos-label-row"><span class="pos-name-lbl">Ethereum</span></div>
+      <p class="pos-thesis">"Dominant DeFi + stablecoin settlement + L2 ecosystem. Glamsterdam and Hegota upgrades on the 2026 roadmap. ETF net redemptions have created a structural discount. The gap between where ETH trades and where it belongs is the thesis."</p>
     </div>
 
-    <!-- CRCL WATCH -->
-    <div class="pos-card watch rev d2">
+    <div class="pos-card long rev d2">
       <div class="pos-card-head">
-        <div class="pos-ticker">CRCL</div>
-        <span class="badge b-watch">WATCH</span>
+        <div class="pos-ticker">SOL</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
       </div>
       <div class="pos-price-row">
-        <div class="pos-price clr-pu" style="font-size:22px; margin-top:6px;">PRE-IPO</div>
+        <div id="price-SOL" class="pos-price clr-up">$91.25</div>
+        <span id="chg-SOL" class="pos-chg clr-up">+7.73%</span>
       </div>
-      <div class="sparkline-wrap">
-        <svg width="100%" height="40" viewBox="0 0 260 40" preserveAspectRatio="none">
-          <polyline points="0,22 26,20 52,23 78,21 104,19 130,17 156,18 182,15 208,14 234,14 260,12"
-            fill="none" stroke="rgba(155,126,200,0.6)" stroke-width="1.5"/>
-        </svg>
-      </div>
-      <div class="pos-meta">
-        <div><div class="meta-k">Stage</div><div class="meta-v">Pre-IPO</div></div>
-        <div><div class="meta-k">Vertical</div><div class="meta-v">Stablecoin Rail</div></div>
-        <div><div class="meta-k">Catalyst</div><div class="meta-v">GENIUS Act</div></div>
-        <div><div class="meta-k">Conviction</div><div class="meta-v" style="color:var(--teal)">HIGH</div></div>
-      </div>
-      <p class="pos-thesis">"Not a stablecoin company. A payment rail for the agentic economy. USDC + x402 protocol = default AI-to-AI settlement layer. IPO is the starting gun, not the destination."</p>
+      <div class="pos-label-row"><span class="pos-name-lbl">Solana</span></div>
+      <p class="pos-thesis">"Alpenglow consensus upgrade (Anza) delivers 100–150ms finality via Votor + Rotor. Dominant DEX volume and developer activity intact through the correction. Bought fear, holding for the cycle."</p>
     </div>
 
-    <!-- SOL LONG -->
     <div class="pos-card long rev d3">
       <div class="pos-card-head">
-        <div class="pos-ticker">SOL / USD</div>
-        <span class="badge b-long">LONG</span>
+        <div class="pos-ticker">SUI</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
       </div>
       <div class="pos-price-row">
-        <div class="pos-price clr-up">$81</div>
-        <span class="pos-chg clr-up">+3.2%</span>
+        <div id="price-SUI" class="pos-price clr-up">$0.96</div>
+        <span id="chg-SUI" class="pos-chg clr-up">+3.30%</span>
       </div>
-      <div class="sparkline-wrap">
-        <svg width="100%" height="40" viewBox="0 0 260 40" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(0,255,136,0.18)"/>
-              <stop offset="100%" stop-color="rgba(0,255,136,0)"/>
-            </linearGradient>
-          </defs>
-          <polyline points="0,38 26,37 52,36 78,35 104,36 130,32 156,30 182,27 208,23 234,20 260,16"
-            fill="none" stroke="rgba(0,255,136,0.7)" stroke-width="1.5"/>
-          <polygon points="0,38 26,37 52,36 78,35 104,36 130,32 156,30 182,27 208,23 234,20 260,16 260,40 0,40"
-            fill="url(#sg4)"/>
-        </svg>
+      <div class="pos-label-row"><span class="pos-name-lbl">Sui</span></div>
+      <p class="pos-thesis">"Breakout L1 of the 2025-2026 cycle. Move language gives security + parallel processing advantages legacy chains can't match. TVL stayed stable even during the February crash — a sign of loyal developer commitment, not retail speculation."</p>
+    </div>
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">HYPE</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
       </div>
-      <div class="pos-meta">
-        <div><div class="meta-k">Entry</div><div class="meta-v">$68</div></div>
-        <div><div class="meta-k">Target</div><div class="meta-v">$160</div></div>
-        <div><div class="meta-k">Stop</div><div class="meta-v">$58</div></div>
-        <div><div class="meta-k">P&amp;L</div><div class="meta-v clr-up">+19.1%</div></div>
+      <div class="pos-price-row">
+        <div id="price-HYPE" class="pos-price clr-up">$29.31</div>
+        <span id="chg-HYPE" class="pos-chg clr-up">+8.91%</span>
       </div>
-      <p class="pos-thesis">"Alpenglow (Anza) brings 100–150ms finality via Votor + Rotor. Dominant DEX volume + developer activity intact. Discounted entry during market fear phase."</p>
+      <div class="pos-label-row"><span class="pos-name-lbl">Hyperliquid</span></div>
+      <p class="pos-thesis">"On-chain perpetuals done right. Hyperliquid has proven product-market fit at scale — volume that would rank it among the top CEXs. Fully on-chain, no VC extraction, community-first distribution. This is what DeFi infra is supposed to look like."</p>
+    </div>
+
+    <div class="pos-card long rev d1">
+      <div class="pos-card-head">
+        <div class="pos-ticker">XRP</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-med">MEDIUM</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-XRP" class="pos-price clr-up">$1.39</div>
+        <span id="chg-XRP" class="pos-chg clr-up">+2.66%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">XRP</span></div>
+      <p class="pos-thesis">"Regulatory clarity post-SEC settlement has unlocked institutional interest. Cross-border settlement use case is real and undervalued. Conviction at medium — needs Clarity Act progress and sustained ETF inflow confirmation to upgrade."</p>
+    </div>
+
+    <div class="pos-card watch rev d2">
+      <div class="pos-card-head">
+        <div class="pos-ticker">PENGU</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-med">MEDIUM</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-PENGU" class="pos-price clr-up">$0.007</div>
+        <span id="chg-PENGU" class="pos-chg clr-up">+6.67%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Pudgy Penguins</span></div>
+      <p class="pos-thesis">"Negative CAC model — physical merchandise drives digital user acquisition at scale. 2M+ units sold into the $31.7B licensed toy market. One of the few NFT-native projects with real-world distribution and brand equity outside crypto."</p>
+    </div>
+
+  </div>
+
+  <!-- EQUITIES BLOCK -->
+  <div class="pos-block-label rev" style="margin-top:56px;">
+    <span class="block-tag block-eq">EQUITIES</span>
+    <span class="block-count">10 positions</span>
+  </div>
+  <div class="pos-grid pos-grid-eq">
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">TSLA</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-TSLA" class="pos-price clr-up">$405.94</div>
+        <span id="chg-TSLA" class="pos-chg clr-up">+3.44%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Tesla</span></div>
+      <p class="pos-thesis">"Not a car company. An energy, AI, and robotics platform. Optimus robot at scale is the optionality the market hasn't priced. FSD progress turns every vehicle into a data collection node. The thesis is autonomy, not EVs."</p>
+    </div>
+
+    <div class="pos-card long rev d1">
+      <div class="pos-card-head">
+        <div class="pos-ticker">PLTR</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-PLTR" class="pos-price clr-up">$153.11</div>
+        <span id="chg-PLTR" class="pos-chg clr-up">+4.00%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Palantir</span></div>
+      <p class="pos-thesis">"The operating system for Western institutional AI. AIP is a moat that compounds with every enterprise and government deployment. Defense contracts + commercial AIP expansion = dual-engine growth in a period where geopolitical spending is accelerating."</p>
+    </div>
+
+    <div class="pos-card long rev d2">
+      <div class="pos-card-head">
+        <div class="pos-ticker">COIN</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-COIN" class="pos-price clr-up">$210</div>
+        <span id="chg-COIN" class="pos-chg clr-up">+14.6%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Coinbase</span></div>
+      <p class="pos-thesis">"Custodian for 80%+ of US spot crypto ETF assets. FY25 revenue $7.18B. $11.3B liquidity position. The transition from high-fee broker to low-fee, high-volume financial infrastructure is structurally undervalued. Base network adds a long-duration L2 option."</p>
+    </div>
+
+    <div class="pos-card long rev d3">
+      <div class="pos-card-head">
+        <div class="pos-ticker">NVDA</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-NVDA" class="pos-price clr-up">$183.04</div>
+        <span id="chg-NVDA" class="pos-chg clr-up">+1.66%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Nvidia</span></div>
+      <p class="pos-thesis">"The picks-and-shovels of the AI build-out. Every AI model that gets trained and every inference that gets run needs CUDA and H-series hardware. Blackwell architecture extends the moat. 6G and photonics investments show the roadmap extends well beyond current cycle."</p>
+    </div>
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">CRCL</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-CRCL" class="pos-price clr-up">$107.81</div>
+        <span id="chg-CRCL" class="pos-chg clr-up">+2.41%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Circle Internet Group</span></div>
+      <p class="pos-thesis">"Not a stablecoin company. A payment rail company. USDC + x402 protocol = the default AI agent-to-agent settlement layer. GENIUS Act is the regulatory catalyst. Trading 64% off its all-time high of $299 — this is a structural discount on the most important stablecoin infrastructure play in the market."</p>
+    </div>
+
+    <div class="pos-card long rev d1">
+      <div class="pos-card-head">
+        <div class="pos-ticker">RKLB</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-RKLB" class="pos-price clr-up">$71.91</div>
+        <span id="chg-RKLB" class="pos-chg clr-up">+2.54%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Rocket Lab</span></div>
+      <p class="pos-thesis">"The only credible small-launch competitor to SpaceX with a vertically integrated model. Electron has a consistent launch cadence. Neutron is the medium-lift catalyst. Defense contracts + commercial satellite demand = a durable revenue floor."</p>
+    </div>
+
+    <div class="pos-card long rev d2">
+      <div class="pos-card-head">
+        <div class="pos-ticker">HOOD</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-HOOD" class="pos-price clr-up">$82.21</div>
+        <span id="chg-HOOD" class="pos-chg clr-up">+8.07%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Robinhood</span></div>
+      <p class="pos-thesis">"Crypto + equities + options + prediction markets on one platform for a generation that doesn't use banks. The play is the full financial services stack for the digitally native. Crypto bull market is a direct revenue accelerant."</p>
+    </div>
+
+    <div class="pos-card long rev d3">
+      <div class="pos-card-head">
+        <div class="pos-ticker">AMZN</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-AMZN" class="pos-price clr-up">$216.82</div>
+        <span id="chg-AMZN" class="pos-chg clr-up">+3.88%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Amazon</span></div>
+      <p class="pos-thesis">"AWS is the silent engine of the AI era — every startup, every model, every inference layer runs on it. Advertising + Prime are compounding cash machines funding the AI infrastructure build. Undervalued relative to its infrastructure dominance."</p>
+    </div>
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">GOOGL</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-GOOGL" class="pos-price clr-up">$303.13</div>
+        <span id="chg-GOOGL" class="pos-chg clr-up">+0.15%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Alphabet / Google</span></div>
+      <p class="pos-thesis">"Gemini + Google Cloud + Search = the most distribution-advantaged AI player in the world. The market has consistently underestimated Google's ability to absorb AI disruption into its existing moats. Cloud upside is structurally underpriced."</p>
+    </div>
+
+    <div class="pos-card long rev d1">
+      <div class="pos-card-head">
+        <div class="pos-ticker">META</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-META" class="pos-price clr-up">$660</div>
+        <span id="chg-META" class="pos-chg clr-up">+1.8%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Meta Platforms</span></div>
+      <p class="pos-thesis">"3 billion daily active users is the most valuable AI training dataset on earth. Llama as open-source strategy is a masterstroke — builds ecosystem dominance while commoditizing competitors. AR/VR optionality through Ray-Ban + Orion is underpriced."</p>
+    </div>
+
+    <div class="pos-card long rev d2">
+      <div class="pos-card-head">
+        <div class="pos-ticker">GLXY</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-GLXY" class="pos-price clr-up">$28.40</div>
+        <span id="chg-GLXY" class="pos-chg clr-up">+6.2%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Galaxy Digital</span></div>
+      <p class="pos-thesis">"The Goldman Sachs of digital assets. Trading desk + asset management + investment banking for the crypto-native institution. Positioned at every layer of the institutional crypto stack. Structural beneficiary of every bull cycle and every new product launch in the space."</p>
     </div>
 
   </div>
@@ -1382,5 +1640,216 @@ window.addEventListener('scroll', () => {
     : 'rgba(7,7,15,0.82)';
 });
 </script>
+
+<script>
+// ╔══════════════════════════════════════════════════════════════╗
+//  TOKENZEN LIVE PRICE ORACLE  v2.0
+//  ─────────────────────────────────────────────────────────────
+//  Crypto  → CoinGecko REST  (no key, refreshes every 15s)
+//  Equities → Finnhub WebSocket (tick-by-tick, real-time)
+//               + Finnhub REST  (on load: price + 24h change)
+//
+//  ► TO ACTIVATE LIVE EQUITY PRICES:
+//    1. Go to https://finnhub.io  → sign up free (takes 60 sec)
+//    2. Copy your API key from the dashboard
+//    3. Paste it below replacing  YOUR_FINNHUB_KEY
+// ╚══════════════════════════════════════════════════════════════╝
+(function () {
+  // ─── CONFIG ────────────────────────────────────────────────────
+  const FINNHUB_KEY   = 'd6l27chr01qptf3ohnpgd6l27chr01qptf3ohnq0';
+  const CRYPTO_INTERVAL_MS  = 15000;           // 15s crypto poll
+  const EQUITY_RECONNECT_MS = 5000;            // WS reconnect delay
+  const EQUITY_REST_INTERVAL_MS = 30000;       // REST fallback interval
+
+  // ─── ASSET MAPS ────────────────────────────────────────────────
+  const CRYPTO = {
+    BTC  : 'bitcoin',
+    ETH  : 'ethereum',
+    SOL  : 'solana',
+    SUI  : 'sui',
+    HYPE : 'hyperliquid',
+    XRP  : 'ripple',
+    PENGU: 'pudgy-penguins',
+  };
+
+  const EQUITIES = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY'];
+
+  // Track previous prices for up/down flash
+  const prevPrice = {};
+  // Track 24h change % separately (from REST, not WS)
+  const dayChange = {};
+
+  // ─── FORMATTERS ────────────────────────────────────────────────
+  function fmtPrice(p) {
+    if (!p && p !== 0) return '—';
+    if (p >= 1000)  return '$' + p.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    if (p >= 100)   return '$' + p.toFixed(2);
+    if (p >= 1)     return '$' + p.toFixed(2);
+    if (p >= 0.01)  return '$' + p.toFixed(4);
+    return '$' + p.toFixed(6);
+  }
+
+  function fmtChg(pct) {
+    if (pct === undefined || pct === null) return '—';
+    return (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+  }
+
+  // ─── DOM UPDATE + FLASH ─────────────────────────────────────────
+  function updateCard(ticker, price, changePct, flash) {
+    const pEl = document.getElementById('price-' + ticker);
+    const cEl = document.getElementById('chg-'   + ticker);
+    if (!pEl || !cEl) return;
+
+    const up = (changePct !== undefined && changePct !== null) ? changePct >= 0 : true;
+
+    if (price !== undefined && price !== null) {
+      pEl.textContent = fmtPrice(price);
+
+      // Flash animation: green=uptick, red=downtick
+      if (flash !== undefined) {
+        const flashClass = flash ? 'flash-up' : 'flash-dn';
+        pEl.classList.remove('flash-up','flash-dn');
+        void pEl.offsetWidth; // reflow to restart animation
+        pEl.classList.add(flashClass);
+      }
+
+      const priceColor = (prevPrice[ticker] !== undefined && price < prevPrice[ticker])
+        ? 'clr-dn' : 'clr-up';
+      pEl.className = 'pos-price ' + priceColor;
+      prevPrice[ticker] = price;
+    }
+
+    if (changePct !== undefined && changePct !== null) {
+      cEl.textContent = fmtChg(changePct);
+      cEl.className   = 'pos-chg ' + (up ? 'clr-up' : 'clr-dn');
+      dayChange[ticker] = changePct;
+    }
+  }
+
+  function setStatus(msg, color) {
+    const ts = document.getElementById('price-timestamp');
+    if (ts) { ts.textContent = msg; ts.style.color = color || ''; }
+  }
+
+  function stampTime() {
+    const now = new Date();
+    setStatus('Updated ' + now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'}));
+  }
+
+  // ─── CRYPTO: COINGECKO REST ─────────────────────────────────────
+  async function fetchCrypto() {
+    const ids = Object.values(CRYPTO).join(',');
+    const url  = 'https://api.coingecko.com/api/v3/simple/price'
+               + '?ids=' + ids + '&vs_currencies=usd&include_24hr_change=true';
+    try {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error(r.status);
+      const d = await r.json();
+      for (const [ticker, id] of Object.entries(CRYPTO)) {
+        if (d[id]) updateCard(ticker, d[id].usd, d[id].usd_24h_change ?? 0);
+      }
+      stampTime();
+    } catch(e) { console.warn('[TZ] CoinGecko error:', e.message); }
+  }
+
+  // ─── EQUITIES: FINNHUB REST (initial load + fallback) ──────────
+  async function fetchEquityREST(ticker) {
+    if (!FINNHUB_KEY || FINNHUB_KEY === 'YOUR_FINNHUB_KEY') return;
+    try {
+      const r = await fetch(
+        'https://finnhub.io/api/v1/quote?symbol=' + ticker + '&token=' + FINNHUB_KEY
+      );
+      if (!r.ok) throw new Error(r.status);
+      const d = await r.json();
+      if (d.c) {
+        const pct = d.pc ? ((d.c - d.pc) / d.pc) * 100 : 0;
+        updateCard(ticker, d.c, pct);
+      }
+    } catch(e) { console.warn('[TZ] Finnhub REST error (' + ticker + '):', e.message); }
+  }
+
+  async function fetchAllEquityREST() {
+    // Stagger calls to respect 60 req/min rate limit (1 per ~1.1s)
+    for (const ticker of EQUITIES) {
+      await fetchEquityREST(ticker);
+      await new Promise(r => setTimeout(r, 120));
+    }
+    stampTime();
+  }
+
+  // ─── EQUITIES: FINNHUB WEBSOCKET (real-time ticks) ─────────────
+  let ws      = null;
+  let wsAlive = false;
+
+  function connectFinnhubWS() {
+    if (!FINNHUB_KEY || FINNHUB_KEY === 'YOUR_FINNHUB_KEY') {
+      setStatus('⚠ Add Finnhub key for live equity prices', '#f5a623');
+      return;
+    }
+
+    ws = new WebSocket('wss://ws.finnhub.io?token=' + FINNHUB_KEY);
+
+    ws.onopen = () => {
+      wsAlive = true;
+      console.log('[TZ] Finnhub WS connected');
+      // Subscribe to all equities
+      EQUITIES.forEach(sym => {
+        ws.send(JSON.stringify({ type: 'subscribe', symbol: sym }));
+      });
+      setStatus('⬤ Streaming live', '#00ff88');
+      // Fetch REST quotes immediately for initial prices + 24h change
+      fetchAllEquityREST();
+    };
+
+    ws.onmessage = (e) => {
+      try {
+        const msg = JSON.parse(e.data);
+        if (msg.type !== 'trade' || !msg.data) return;
+        for (const trade of msg.data) {
+          const sym   = trade.s;  // e.g. "TSLA"
+          const price = trade.p;  // last trade price
+          if (!EQUITIES.includes(sym)) continue;
+          const chg = dayChange[sym] ?? null;
+          // Flash direction: uptick vs downtick vs prev
+          const prev  = prevPrice[sym];
+          const flash = prev !== undefined ? price >= prev : true;
+          updateCard(sym, price, chg, flash);
+        }
+        stampTime();
+      } catch(err) { /* ignore parse errors */ }
+    };
+
+    ws.onerror = (e) => { console.warn('[TZ] Finnhub WS error'); };
+
+    ws.onclose = () => {
+      wsAlive = false;
+      console.log('[TZ] Finnhub WS closed — reconnecting in ' + EQUITY_RECONNECT_MS + 'ms');
+      setStatus('Reconnecting...', '#f5a623');
+      setTimeout(connectFinnhubWS, EQUITY_RECONNECT_MS);
+    };
+  }
+
+  // ─── BOOTSTRAP ─────────────────────────────────────────────────
+  function init() {
+    // Crypto: start immediately, then every 15s
+    fetchCrypto();
+    setInterval(fetchCrypto, CRYPTO_INTERVAL_MS);
+
+    // Equities: WebSocket for live ticks + REST every 30s as backup
+    connectFinnhubWS();
+    setInterval(() => {
+      if (!wsAlive) fetchAllEquityREST();   // Only REST-poll if WS is down
+    }, EQUITY_REST_INTERVAL_MS);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>
+
 </body>
 </html>
