@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOKENZEN | Intelligence Layer for Digital Assets</title>
+  <meta name="description" content="Research-driven investment intelligence for the digital asset era. Real positions. Live models. Unfiltered thesis.">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-0: #07070F;
+      --bg-1: #0C0C18;
+      --bg-2: #0F0F1E;
+      --bg-3: #141428;
+      --purple: #7B5EA7;
+      --purple-bright: #9B7EC8;
+      --purple-dim: rgba(123,94,167,0.12);
+      --teal: #00D4C8;
+      --teal-dim: rgba(0,212,200,0.08);
+      --teal-mid: rgba(0,212,200,0.25);
+      --pink: #FF4B8A;
+      --pink-dim: rgba(255,75,138,0.1);
+      --green: #00FF88;
+      --green-dim: rgba(0,255,136,0.08);
+      --red: #FF3B5B;
+      --text-0: #F0F0FA;
+      --text-1: #A0A0C0;
+      --text-2: #606080;
+      --text-3: #363656;
+      --border-0: rgba(123,94,167,0.18);
+      --border-1: rgba(0,212,200,0.25);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--bg-0);
+      color: var(--text-0);
+      font-family: 'Figtree', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg-0); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 2px; }
+
+    /* ── CANVAS ── */
+    #netcanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 64px;
+      padding: 0 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-0);
+      backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(7,7,15,0.82);
+      transition: background 0.4s;
+    }
+
+    .nav-logo {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: 17px;
+      letter-spacing: 0.22em;
+      color: var(--text-0);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-pip {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 8px var(--teal);
+      animation: pip 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pip {
+      0%,100% { opacity: 1; box-shadow: 0 0 8px var(--teal); }
+      50% { opacity: 0.35; box-shadow: 0 0 2px var(--teal); }
+    }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-center a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      color: var(--text-2);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-center a:hover { color: var(--teal); }
+
+    .nav-block {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text-3);
+    }
+    .nav-block em {
+      color: var(--purple-bright);
+      font-style: normal;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 64px 52px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.28em;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 36px;
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+    .hero-tag-line {
+      display: block;
+      width: 36px;
+      height: 1px;
+      background: var(--teal);
+      opacity: 0.6;
+    }
+
+    .hero-h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(46px, 7.5vw, 112px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+      margin-bottom: 36px;
+      max-width: 900px;
+      animation: fadeUp 0.8s ease 0.35s both;
+    }
+
+    .hero-h1 .t { color: var(--teal); }
+    .hero-h1 .p { color: var(--pink); }
+    .hero-h1 .dim { color: var(--text-2); }
+
+    .hero-desc {
+      font-size: 18px;
+      line-height: 1.72;
+      color: var(--text-1);
+      max-width: 520px;
+      margin-bottom: 52px;
+      animation: fadeUp 0.8s ease 0.5s both;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      animation: fadeUp 0.8s ease 0.65s both;
+    }
+
+    .btn-teal {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 15px 34px;
+      background: var(--teal);
+      color: var(--bg-0);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      transition: filter 0.25s, transform 0.25s;
+    }
+    .btn-teal:hover { filter: brightness(1.15); transform: translateY(-2px); }
+
+    .btn-ghost {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 15px 34px;
+      background: transparent;
+      color: var(--text-1);
+      border: 1px solid var(--border-0);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: border-color 0.25s, color 0.25s, transform 0.25s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--purple-bright);
+      color: var(--text-0);
+      transform: translateY(-2px);
+    }
+
+    .hero-ticker {
+      position: absolute;
+      right: 52px;
+      bottom: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 28px;
+      animation: fadeUp 0.8s ease 0.8s both;
+    }
+
+    .tick-item { text-align: right; }
+    .tick-val {
+      font-family: 'Orbitron', monospace;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .tick-val.up { color: var(--green); }
+    .tick-val.purple { color: var(--purple-bright); }
+    .tick-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      color: var(--text-3);
+      text-transform: uppercase;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 52px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.22em;
+      color: var(--text-3);
+      text-transform: uppercase;
+      animation: fadeUp 0.8s ease 1s both;
+    }
+
+    .scroll-bar {
+      width: 44px;
+      height: 1px;
+      background: var(--text-3);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-bar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--teal);
+      animation: scanLine 2.2s ease-in-out infinite;
+    }
+    @keyframes scanLine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* ── SECTION SHELL ── */
+    .s {
+      position: relative;
+      z-index: 1;
+      padding: 116px 52px;
+    }
+
+    .s-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 60px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-0);
+    }
+
+    .s-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--teal);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .s-h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(30px, 4vw, 52px);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.015em;
+    }
+
+    .s-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 88px;
+      font-weight: 900;
+      color: var(--bg-2);
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* ── POSITIONS ── */
+    .pos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 2px;
+    }
+
+    .pos-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-0);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
+    }
+    .pos-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .pos-card.long::before { background: linear-gradient(90deg, var(--green), transparent); }
+    .pos-card.short::before { background: linear-gradient(90deg, var(--red), transparent); }
+    .pos-card.watch::before { background: linear-gradient(90deg, var(--purple-bright), transparent); }
+
+    .pos-card:hover {
+      background: var(--bg-3);
+      border-color: var(--teal-mid);
+      transform: translateY(-3px);
+    }
+
+    .pos-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .pos-ticker {
+      font-family: 'Orbitron', monospace;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+    }
+    .b-long { background: rgba(0,255,136,0.08); color: var(--green); border: 1px solid rgba(0,255,136,0.25); }
+    .b-short { background: rgba(255,59,91,0.08); color: var(--red); border: 1px solid rgba(255,59,91,0.25); }
+    .b-watch { background: rgba(155,126,200,0.08); color: var(--purple-bright); border: 1px solid rgba(155,126,200,0.25); }
+
+    .pos-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+    .pos-price {
+      font-family: 'Orbitron', monospace;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .clr-up { color: var(--green); }
+    .clr-dn { color: var(--red); }
+    .clr-pu { color: var(--purple-bright); }
+
+    .pos-chg {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+
+    .sparkline-wrap {
+      margin: 14px 0 6px;
+      height: 40px;
+    }
+
+    .pos-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding-top: 22px;
+      margin-top: 10px;
+      border-top: 1px solid var(--border-0);
+    }
+    .meta-k {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      color: var(--text-2);
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .meta-v {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-1);
+    }
+
+    .pos-thesis {
+      margin-top: 18px;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--text-2);
+      font-style: italic;
+      border-left: 2px solid var(--border-0);
+      padding-left: 12px;
+    }
+
+    /* ── MODELS ── */
+    .models-s { background: linear-gradient(180deg, var(--bg-0) 0%, #0A0A15 100%); }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 2px;
+    }
+
+    .model-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-0);
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.35s, background 0.35s;
+    }
+    .model-card:hover {
+      border-color: var(--purple-bright);
+      background: var(--bg-3);
+    }
+
+    .mc-bg {
+      position: absolute;
+      right: 20px; bottom: 12px;
+      font-family: 'Orbitron', monospace;
+      font-size: 96px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.015);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .mc-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .mc-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .d-live { background: var(--green); animation: pip 2s ease-in-out infinite; }
+    .d-beta { background: var(--teal); }
+    .d-dev  { background: var(--purple-bright); }
+
+    .mc-status-txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .t-live { color: var(--green); }
+    .t-beta { color: var(--teal); }
+    .t-dev  { color: var(--purple-bright); }
+
+    .mc-name {
+      font-family: 'Orbitron', monospace;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .mc-desc {
+      font-size: 14px;
+      line-height: 1.68;
+      color: var(--text-1);
+      margin-bottom: 24px;
+    }
+    .mc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .mc-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      background: var(--purple-dim);
+      border: 1px solid rgba(123,94,167,0.22);
+      color: var(--purple-bright);
+    }
+
+    /* ── INTELLIGENCE STREAM ── */
+    .stream-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .stream-col { display: flex; flex-direction: column; gap: 2px; }
+
+    .stream-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-0);
+      padding: 28px 32px;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .stream-card:hover {
+      border-color: var(--pink);
+      background: var(--bg-3);
+    }
+
+    .sc-src {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .sc-icon {
+      width: 30px; height: 30px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .i-x  { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--text-1); }
+    .i-li { background: rgba(10,102,194,0.12);  border: 1px solid rgba(10,102,194,0.28); color: #5B9BD5; }
+    .i-rv { background: var(--pink-dim);         border: 1px solid rgba(255,75,138,0.28); color: var(--pink); }
+
+    .sc-meta { flex: 1; }
+    .sc-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-1);
+    }
+    .sc-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--text-3);
+    }
+
+    .sc-body {
+      font-size: 14px;
+      line-height: 1.68;
+      color: var(--text-0);
+      margin-bottom: 16px;
+    }
+    .sc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .sc-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.1em;
+      color: var(--teal);
+      text-transform: uppercase;
+    }
+
+    /* ── TOKENITES ── */
+    .tokenites-s {
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg-0) 0%, #0B0A18 50%, var(--bg-0) 100%);
+      overflow: hidden;
+    }
+
+    .tz-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(123,94,167,0.1) 0%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .tz-h2 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(44px, 6.5vw, 96px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.025em;
+      margin-bottom: 28px;
+    }
+    .tz-h2 .tz-pk { color: var(--pink); }
+
+    .tz-sub {
+      font-size: 18px;
+      line-height: 1.72;
+      color: var(--text-1);
+      max-width: 500px;
+      margin: 0 auto 52px;
+    }
+
+    .tz-form {
+      display: flex;
+      max-width: 460px;
+      margin: 0 auto 60px;
+    }
+    .tz-input {
+      flex: 1;
+      padding: 15px 22px;
+      background: var(--bg-2);
+      border: 1px solid var(--border-0);
+      border-right: none;
+      color: var(--text-0);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .tz-input:focus { border-color: var(--teal); }
+    .tz-input::placeholder { color: var(--text-3); }
+
+    .tz-btn {
+      padding: 15px 26px;
+      background: var(--pink);
+      border: none;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: filter 0.25s;
+    }
+    .tz-btn:hover { filter: brightness(1.15); }
+
+    .tz-stats {
+      display: flex;
+      justify-content: center;
+      gap: 72px;
+    }
+    .tz-sv {
+      font-family: 'Orbitron', monospace;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .tz-sl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.2em;
+      color: var(--text-3);
+      text-transform: uppercase;
+    }
+
+    /* ── ROADMAP ── */
+    .road-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .road-ph {
+      padding: 40px 30px;
+      background: var(--bg-2);
+      border: 1px solid var(--border-0);
+      position: relative;
+      transition: all 0.3s;
+    }
+    .road-ph.active {
+      border-top: 2px solid var(--teal);
+      background: var(--bg-3);
+    }
+    .road-ph.coming { opacity: 0.48; }
+    .road-ph:hover { opacity: 1; border-color: var(--teal-mid); }
+
+    .rp-num {
+      font-family: 'Orbitron', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--text-3);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .rp-num.an { color: var(--teal); }
+
+    .rp-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 20px;
+    }
+
+    .rp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+    .rp-li {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--text-2);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .rp-li::before { content: '—'; color: var(--text-3); flex-shrink: 0; }
+    .rp-li.done { color: var(--text-1); }
+    .rp-li.done::before { content: '✓'; color: var(--teal); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      padding: 44px 52px;
+      border-top: 1px solid var(--border-0);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .ft-logo {
+      font-family: 'Orbitron', monospace;
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: 0.22em;
+      color: var(--text-2);
+    }
+    .ft-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text-3);
+    }
+    .ft-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+    .ft-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--text-3);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .ft-links a:hover { color: var(--teal); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .rev {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .rev.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-center { display: none; }
+      .hero { padding: 64px 24px 0; }
+      .hero-ticker { display: none; }
+      .s { padding: 80px 24px; }
+      .stream-cols, .road-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; padding: 36px 24px; }
+    }
+    @media (max-width: 600px) {
+      .hero-h1 { font-size: 46px; }
+      .pos-grid, .model-grid { grid-template-columns: 1fr; }
+      .road-grid { grid-template-columns: 1fr 1fr; }
+      .tz-stats { gap: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="netcanvas"></canvas>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo"><div class="logo-pip"></div>TOKENZEN</a>
+  <ul class="nav-center">
+    <li><a href="#positions">Positions</a></li>
+    <li><a href="#models">Models</a></li>
+    <li><a href="#stream">Intelligence</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#tokenites">TOKENITES</a></li>
+  </ul>
+  <div class="nav-block">BLOCK <em id="block-num">—</em></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">
+    <span class="hero-tag-line"></span>
+    TOKENZEN Tech Capital &nbsp;/&nbsp; Est. 2024
+  </div>
+
+  <h1 class="hero-h1">
+    THE<br>
+    <span class="t">INTELLIGENCE</span><br>
+    <span class="dim">LAYER</span><br>
+    <span class="p">PORTAL</span>
+  </h1>
+
+  <p class="hero-desc">
+    Research-driven investment intelligence for the digital asset era.
+    Real positions. Live models. Unfiltered thesis.
+    This is the TOKENZEN operating system — open to all.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#positions" class="btn-teal">Enter Portal</a>
+    <a href="#tokenites" class="btn-ghost">Join TOKENITES</a>
+  </div>
+
+  <div class="hero-ticker">
+    <div class="tick-item">
+      <div class="tick-val up" id="btc-live">$72,340</div>
+      <div class="tick-lbl">BTC / USD</div>
+    </div>
+    <div class="tick-item">
+      <div class="tick-val up">$2.52T</div>
+      <div class="tick-lbl">Total Mkt Cap</div>
+    </div>
+    <div class="tick-item">
+      <div class="tick-val purple">22</div>
+      <div class="tick-lbl">Fear &amp; Greed</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-bar"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- POSITIONS -->
+<section class="s" id="positions">
+  <div class="s-head">
+    <div>
+      <div class="s-eyebrow">Live Signals</div>
+      <h2 class="s-h2">CURRENT<br>POSITIONS</h2>
+    </div>
+    <div class="s-num">01</div>
+  </div>
+
+  <div class="pos-grid">
+
+    <!-- BTC LONG -->
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">BTC / USD</div>
+        <span class="badge b-long">LONG</span>
+      </div>
+      <div class="pos-price-row">
+        <div class="pos-price clr-up">$72,340</div>
+        <span class="pos-chg clr-up">+2.31%</span>
+      </div>
+      <div class="sparkline-wrap">
+        <svg width="100%" height="40" viewBox="0 0 260 40" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(0,255,136,0.18)"/>
+              <stop offset="100%" stop-color="rgba(0,255,136,0)"/>
+            </linearGradient>
+          </defs>
+          <polyline points="0,36 22,31 44,33 66,22 88,27 110,19 132,24 154,13 176,17 198,9 220,12 242,7 260,5"
+            fill="none" stroke="rgba(0,255,136,0.7)" stroke-width="1.5"/>
+          <polygon points="0,36 22,31 44,33 66,22 88,27 110,19 132,24 154,13 176,17 198,9 220,12 242,7 260,5 260,40 0,40"
+            fill="url(#sg1)"/>
+        </svg>
+      </div>
+      <div class="pos-meta">
+        <div><div class="meta-k">Entry</div><div class="meta-v">$61,200</div></div>
+        <div><div class="meta-k">Target</div><div class="meta-v">$95,000</div></div>
+        <div><div class="meta-k">Stop</div><div class="meta-v">$58,000</div></div>
+        <div><div class="meta-k">P&amp;L</div><div class="meta-v clr-up">+18.2%</div></div>
+      </div>
+      <p class="pos-thesis">"Bottom confirmation via KOSPI rotation signal + US Strategic Reserve structural bid. Recovery thesis intact above $69K. Weekly close above $83,737 = confirmed reversal."</p>
+    </div>
+
+    <!-- COIN LONG -->
+    <div class="pos-card long rev d1">
+      <div class="pos-card-head">
+        <div class="pos-ticker">COIN</div>
+        <span class="badge b-long">LONG</span>
+      </div>
+      <div class="pos-price-row">
+        <div class="pos-price clr-up">$210</div>
+        <span class="pos-chg clr-up">+14.6%</span>
+      </div>
+      <div class="sparkline-wrap">
+        <svg width="100%" height="40" viewBox="0 0 260 40" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(0,255,136,0.18)"/>
+              <stop offset="100%" stop-color="rgba(0,255,136,0)"/>
+            </linearGradient>
+          </defs>
+          <polyline points="0,38 26,36 52,37 78,31 104,33 130,28 156,23 182,20 208,14 234,10 260,6"
+            fill="none" stroke="rgba(0,255,136,0.7)" stroke-width="1.5"/>
+          <polygon points="0,38 26,36 52,37 78,31 104,33 130,28 156,23 182,20 208,14 234,10 260,6 260,40 0,40"
+            fill="url(#sg2)"/>
+        </svg>
+      </div>
+      <div class="pos-meta">
+        <div><div class="meta-k">Entry</div><div class="meta-v">$155</div></div>
+        <div><div class="meta-k">Target</div><div class="meta-v">$280</div></div>
+        <div><div class="meta-k">Stop</div><div class="meta-v">$130</div></div>
+        <div><div class="meta-k">P&amp;L</div><div class="meta-v clr-up">+35.5%</div></div>
+      </div>
+      <p class="pos-thesis">"Infra play. Custody for 80%+ of US spot ETF assets. FY25 revenue $7.18B. $11.3B war chest. Shifts from high-fee broker to low-fee, high-volume utility are mispriced by market."</p>
+    </div>
+
+    <!-- CRCL WATCH -->
+    <div class="pos-card watch rev d2">
+      <div class="pos-card-head">
+        <div class="pos-ticker">CRCL</div>
+        <span class="badge b-watch">WATCH</span>
+      </div>
+      <div class="pos-price-row">
+        <div class="pos-price clr-pu" style="font-size:22px; margin-top:6px;">PRE-IPO</div>
+      </div>
+      <div class="sparkline-wrap">
+        <svg width="100%" height="40" viewBox="0 0 260 40" preserveAspectRatio="none">
+          <polyline points="0,22 26,20 52,23 78,21 104,19 130,17 156,18 182,15 208,14 234,14 260,12"
+            fill="none" stroke="rgba(155,126,200,0.6)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="pos-meta">
+        <div><div class="meta-k">Stage</div><div class="meta-v">Pre-IPO</div></div>
+        <div><div class="meta-k">Vertical</div><div class="meta-v">Stablecoin Rail</div></div>
+        <div><div class="meta-k">Catalyst</div><div class="meta-v">GENIUS Act</div></div>
+        <div><div class="meta-k">Conviction</div><div class="meta-v" style="color:var(--teal)">HIGH</div></div>
+      </div>
+      <p class="pos-thesis">"Not a stablecoin company. A payment rail for the agentic economy. USDC + x402 protocol = default AI-to-AI settlement layer. IPO is the starting gun, not the destination."</p>
+    </div>
+
+    <!-- SOL LONG -->
+    <div class="pos-card long rev d3">
+      <div class="pos-card-head">
+        <div class="pos-ticker">SOL / USD</div>
+        <span class="badge b-long">LONG</span>
+      </div>
+      <div class="pos-price-row">
+        <div class="pos-price clr-up">$81</div>
+        <span class="pos-chg clr-up">+3.2%</span>
+      </div>
+      <div class="sparkline-wrap">
+        <svg width="100%" height="40" viewBox="0 0 260 40" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(0,255,136,0.18)"/>
+              <stop offset="100%" stop-color="rgba(0,255,136,0)"/>
+            </linearGradient>
+          </defs>
+          <polyline points="0,38 26,37 52,36 78,35 104,36 130,32 156,30 182,27 208,23 234,20 260,16"
+            fill="none" stroke="rgba(0,255,136,0.7)" stroke-width="1.5"/>
+          <polygon points="0,38 26,37 52,36 78,35 104,36 130,32 156,30 182,27 208,23 234,20 260,16 260,40 0,40"
+            fill="url(#sg4)"/>
+        </svg>
+      </div>
+      <div class="pos-meta">
+        <div><div class="meta-k">Entry</div><div class="meta-v">$68</div></div>
+        <div><div class="meta-k">Target</div><div class="meta-v">$160</div></div>
+        <div><div class="meta-k">Stop</div><div class="meta-v">$58</div></div>
+        <div><div class="meta-k">P&amp;L</div><div class="meta-v clr-up">+19.1%</div></div>
+      </div>
+      <p class="pos-thesis">"Alpenglow (Anza) brings 100–150ms finality via Votor + Rotor. Dominant DEX volume + developer activity intact. Discounted entry during market fear phase."</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODELS -->
+<section class="s models-s" id="models">
+  <div class="s-head">
+    <div>
+      <div class="s-eyebrow">Research Infrastructure</div>
+      <h2 class="s-h2">MODEL<br>VAULT</h2>
+    </div>
+    <div class="s-num">02</div>
+  </div>
+
+  <div class="model-grid">
+
+    <div class="model-card rev">
+      <div class="mc-bg">01</div>
+      <div class="mc-status">
+        <div class="mc-dot d-live"></div>
+        <span class="mc-status-txt t-live">Live — Updates Daily</span>
+      </div>
+      <h3 class="mc-name">Macro Liquidity<br>Regime Tracker</h3>
+      <p class="mc-desc">Tracks global M2, Fed balance sheet, reverse repo facility, and stablecoin supply to score the macro liquidity regime in real time. Output: Risk-On / Neutral / Risk-Off signal with 4-week rolling lookback.</p>
+      <div class="mc-tags">
+        <span class="mc-tag">Macro</span>
+        <span class="mc-tag">Liquidity</span>
+        <span class="mc-tag">Daily</span>
+      </div>
+    </div>
+
+    <div class="model-card rev d1">
+      <div class="mc-bg">02</div>
+      <div class="mc-status">
+        <div class="mc-dot d-live"></div>
+        <span class="mc-status-txt t-live">Live — Updates Daily</span>
+      </div>
+      <h3 class="mc-name">TOKENZEN Cycle<br>Positioning Score</h3>
+      <p class="mc-desc">Composite 0–100 score synthesizing on-chain holder behavior, exchange outflows, stablecoin dominance, and BTC dominance ratio. Identifies where we sit in the broader crypto market cycle.</p>
+      <div class="mc-tags">
+        <span class="mc-tag">On-Chain</span>
+        <span class="mc-tag">Cycle</span>
+        <span class="mc-tag">Composite</span>
+      </div>
+    </div>
+
+    <div class="model-card rev d2">
+      <div class="mc-bg">03</div>
+      <div class="mc-status">
+        <div class="mc-dot d-beta"></div>
+        <span class="mc-status-txt t-beta">Beta</span>
+      </div>
+      <h3 class="mc-name">Stablecoin Flow<br>Intelligence</h3>
+      <p class="mc-desc">Maps net stablecoin flows into major exchanges (Binance, Coinbase, OKX, Upbit) to detect dry powder accumulation. Korean won-denominated BTC premium (Kimchi premium) as leading indicator overlay.</p>
+      <div class="mc-tags">
+        <span class="mc-tag">Stablecoins</span>
+        <span class="mc-tag">Flows</span>
+        <span class="mc-tag">Exchanges</span>
+      </div>
+    </div>
+
+    <div class="model-card rev d3">
+      <div class="mc-bg">04</div>
+      <div class="mc-status">
+        <div class="mc-dot d-dev"></div>
+        <span class="mc-status-txt t-dev">In Development</span>
+      </div>
+      <h3 class="mc-name">Prediction Market<br>Sentiment Aggregator</h3>
+      <p class="mc-desc">Aggregates Polymarket + Kalshi probability data across macro, crypto, and geopolitical events. Surfaces high-value contrarian setups when market consensus diverges from on-chain and flow reality.</p>
+      <div class="mc-tags">
+        <span class="mc-tag">Polymarket</span>
+        <span class="mc-tag">Kalshi</span>
+        <span class="mc-tag">Sentiment</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INTELLIGENCE STREAM -->
+<section class="s" id="stream">
+  <div class="s-head">
+    <div>
+      <div class="s-eyebrow">Live Feed</div>
+      <h2 class="s-h2">INTELLIGENCE<br>STREAM</h2>
+    </div>
+    <div class="s-num">03</div>
+  </div>
+
+  <div class="stream-cols">
+    <div class="stream-col">
+
+      <div class="stream-card rev">
+        <div class="sc-src">
+          <div class="sc-icon i-x">𝕏</div>
+          <div class="sc-meta">
+            <div class="sc-name">@TOKENZEN</div>
+            <div class="sc-time">2H AGO</div>
+          </div>
+        </div>
+        <p class="sc-body">The KOSPI $13.7B February outflow is not noise. When institutional capital exits a crowded EM equity trade, it needs somewhere to go. BTC is increasingly that destination. The rotation thesis is live.</p>
+        <div class="sc-tags">
+          <span class="sc-tag">#BTC</span>
+          <span class="sc-tag">#MacroRotation</span>
+          <span class="sc-tag">#KOSPI</span>
+        </div>
+      </div>
+
+      <div class="stream-card rev d1">
+        <div class="sc-src">
+          <div class="sc-icon i-li">in</div>
+          <div class="sc-meta">
+            <div class="sc-name">LinkedIn</div>
+            <div class="sc-time">1D AGO</div>
+          </div>
+        </div>
+        <p class="sc-body">Circle is not a stablecoin company. It is a payment rail company. USDC + x402 protocol = the default AI agent-to-agent settlement layer. The IPO is the starting gun, not the destination.</p>
+        <div class="sc-tags">
+          <span class="sc-tag">#Circle</span>
+          <span class="sc-tag">#USDC</span>
+          <span class="sc-tag">#AgenticEconomy</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="stream-col">
+
+      <div class="stream-card rev d1">
+        <div class="sc-src">
+          <div class="sc-icon i-rv">RV</div>
+          <div class="sc-meta">
+            <div class="sc-name">Real Vision</div>
+            <div class="sc-time">3D AGO</div>
+          </div>
+        </div>
+        <p class="sc-body">Full analysis: Why the Supreme Court tariff ruling is structurally bullish for crypto. The uncertainty cap is in. Worst-case escalation is off the table. Markets will reprice the risk premium from here.</p>
+        <div class="sc-tags">
+          <span class="sc-tag">#Tariffs</span>
+          <span class="sc-tag">#Macro</span>
+          <span class="sc-tag">#CryptoRally</span>
+        </div>
+      </div>
+
+      <div class="stream-card rev d2">
+        <div class="sc-src">
+          <div class="sc-icon i-x">𝕏</div>
+          <div class="sc-meta">
+            <div class="sc-name">@TOKENZEN</div>
+            <div class="sc-time">4H AGO</div>
+          </div>
+        </div>
+        <p class="sc-body">Fear & Greed at 22. BTC dominance at 57.4%. Altcoin Season at 35/100. This is the accumulation window, not the celebration. Capital flows into BTC first. Altcoin rotation follows with a lag. Patience is the edge.</p>
+        <div class="sc-tags">
+          <span class="sc-tag">#MarketStructure</span>
+          <span class="sc-tag">#Accumulation</span>
+          <span class="sc-tag">#BTCDominance</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TOKENITES -->
+<section class="s tokenites-s" id="tokenites">
+  <div class="tz-glow"></div>
+  <div style="position:relative;z-index:1;">
+    <div class="s-eyebrow" style="text-align:center;margin-bottom:24px;">Community Access</div>
+    <h2 class="tz-h2">BECOME A<br><span class="tz-pk">TOKENITE</span></h2>
+    <p class="tz-sub">Get early access to TOKENZEN research, live model outputs, trade ideas, and the full intelligence stream before it goes public.</p>
+    <div class="tz-form">
+      <input class="tz-input" type="email" placeholder="your@email.com"/>
+      <button class="tz-btn">Access</button>
+    </div>
+    <div class="tz-stats">
+      <div><div class="tz-sv">4</div><div class="tz-sl">Active Models</div></div>
+      <div><div class="tz-sv">Daily</div><div class="tz-sl">Signal Updates</div></div>
+      <div><div class="tz-sv">100%</div><div class="tz-sl">Open Access</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="s" id="roadmap">
+  <div class="s-head">
+    <div>
+      <div class="s-eyebrow">Build Plan</div>
+      <h2 class="s-h2">THE<br>ROADMAP</h2>
+    </div>
+    <div class="s-num">04</div>
+  </div>
+
+  <div class="road-grid">
+
+    <div class="road-ph active rev">
+      <div class="rp-num an">Phase 01 — NOW</div>
+      <div class="rp-title">Foundation +<br>Signal Layer</div>
+      <ul class="rp-list">
+        <li class="rp-li done">Live positions + thesis</li>
+        <li class="rp-li done">Active model vault</li>
+        <li class="rp-li done">Intelligence stream</li>
+        <li class="rp-li done">TOKENITES signup</li>
+      </ul>
+    </div>
+
+    <div class="road-ph coming rev d1">
+      <div class="rp-num">Phase 02 — Q2 2026</div>
+      <div class="rp-title">Content<br>Aggregation Layer</div>
+      <ul class="rp-list">
+        <li class="rp-li">Live X feed integration</li>
+        <li class="rp-li">LinkedIn article sync</li>
+        <li class="rp-li">Real Vision embeds</li>
+        <li class="rp-li">Unified content search</li>
+      </ul>
+    </div>
+
+    <div class="road-ph coming rev d2">
+      <div class="rp-num">Phase 03 — Q3 2026</div>
+      <div class="rp-title">TOKENITES<br>Community</div>
+      <ul class="rp-list">
+        <li class="rp-li">Gated research tier</li>
+        <li class="rp-li">Community commentary</li>
+        <li class="rp-li">Subscriber dashboard</li>
+        <li class="rp-li">Monetization layer</li>
+      </ul>
+    </div>
+
+    <div class="road-ph coming rev d3">
+      <div class="rp-num">Phase 04 — Q4 2026</div>
+      <div class="rp-title">Interactive<br>Tools</div>
+      <ul class="rp-list">
+        <li class="rp-li">Embedded live models</li>
+        <li class="rp-li">Public screeners</li>
+        <li class="rp-li">Real-time dashboards</li>
+        <li class="rp-li">API access</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-logo">TOKENZEN</div>
+  <div class="ft-copy">© 2026 TOKENZEN Tech Capital. Research only. Not financial advice.</div>
+  <ul class="ft-links">
+    <li><a href="#">𝕏 Twitter</a></li>
+    <li><a href="#">LinkedIn</a></li>
+    <li><a href="#">Real Vision</a></li>
+  </ul>
+</footer>
+
+<script>
+// ──────────────────────────────────────────────────
+// NETWORK CANVAS
+// ──────────────────────────────────────────────────
+const canvas = document.getElementById('netcanvas');
+const ctx = canvas.getContext('2d');
+let nodes = [], W, H;
+
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); buildNodes(); });
+
+function buildNodes() {
+  nodes = [];
+  const n = Math.floor((W * H) / 14000);
+  for (let i = 0; i < n; i++) {
+    nodes.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.6 + 0.4,
+      a: Math.random() * 0.45 + 0.08
+    });
+  }
+}
+buildNodes();
+
+function tick() {
+  ctx.clearRect(0, 0, W, H);
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+  });
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const d  = Math.sqrt(dx*dx + dy*dy);
+      if (d < 160) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.strokeStyle = `rgba(0,212,200,${(1 - d/160) * 0.13})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,212,200,${n.a})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(tick);
+}
+tick();
+
+// ──────────────────────────────────────────────────
+// BLOCK NUMBER
+// ──────────────────────────────────────────────────
+let blockBase = 882347;
+function refreshBlock() {
+  const el = document.getElementById('block-num');
+  if (el) el.textContent = (blockBase += Math.floor(Math.random() * 3)).toLocaleString();
+}
+refreshBlock();
+setInterval(refreshBlock, 12000);
+
+// ──────────────────────────────────────────────────
+// BTC PRICE TICKER
+// ──────────────────────────────────────────────────
+function tickPrice() {
+  const el = document.getElementById('btc-live');
+  if (!el) return;
+  const v = 72340 + (Math.random() - 0.5) * 240;
+  el.textContent = '$' + Math.round(v).toLocaleString();
+}
+setInterval(tickPrice, 7000);
+
+// ──────────────────────────────────────────────────
+// SCROLL REVEAL
+// ──────────────────────────────────────────────────
+const revEls = document.querySelectorAll('.rev');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+revEls.forEach(el => io.observe(el));
+
+// ──────────────────────────────────────────────────
+// NAV SCROLL EFFECT
+// ──────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('main-nav');
+  nav.style.background = window.scrollY > 40
+    ? 'rgba(7,7,15,0.96)'
+    : 'rgba(7,7,15,0.82)';
+});
+</script>
+</body>
+</html>
