@@ -487,7 +487,11 @@
       display: flex;
       align-items: center;
       gap: 16px;
+      margin-top: 56px;
       margin-bottom: 20px;
+    }
+    .pos-block-label:first-of-type {
+      margin-top: 0;
     }
     .block-tag {
       font-family: 'Orbitron', monospace;
@@ -945,7 +949,7 @@
 
   <div class="hero-ticker">
     <div class="tick-item">
-      <div class="tick-val up" id="btc-live">$72,340</div>
+      <div class="tick-val up" id="btc-live">$68,120</div>
       <div class="tick-lbl">BTC / USD</div>
     </div>
     <div class="tick-item">
@@ -984,7 +988,7 @@
   <!-- CRYPTO BLOCK -->
   <div class="pos-block-label rev">
     <span class="block-tag block-crypto">DIGITAL ASSETS</span>
-    <span class="block-count">7 positions</span>
+    <span class="block-count">8 positions</span>
   </div>
   <div class="pos-grid pos-grid-crypto">
 
@@ -997,14 +1001,14 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-BTC" class="pos-price clr-up">$72,500</div>
-        <span id="chg-BTC" class="pos-chg clr-up">+2.61%</span>
+        <div id="price-BTC" class="pos-price clr-up">$68,120</div>
+        <span id="chg-BTC" class="pos-chg clr-up">-1.75%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Bitcoin</span></div>
       <p class="pos-thesis">"The foundational asset. US Strategic Bitcoin Reserve is a structural bid that didn't exist in any prior cycle. KOSPI rotation thesis live — $13.7B in EM outflows finding a new home. Weekly close above $83,737 = confirmed reversal."</p>
     </div>
 
-    <div class="pos-card long rev d1">
+    <div class="pos-card long rev">
       <div class="pos-card-head">
         <div class="pos-ticker">ETH</div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1013,14 +1017,30 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-ETH" class="pos-price clr-up">$1,997</div>
-        <span id="chg-ETH" class="pos-chg clr-up">+2.55%</span>
+        <div id="price-ETH" class="pos-price clr-up">$1,969</div>
+        <span id="chg-ETH" class="pos-chg clr-up">-3.83%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Ethereum</span></div>
       <p class="pos-thesis">"Dominant DeFi + stablecoin settlement + L2 ecosystem. Glamsterdam and Hegota upgrades on the 2026 roadmap. ETF net redemptions have created a structural discount. The gap between where ETH trades and where it belongs is the thesis."</p>
     </div>
 
-    <div class="pos-card long rev d2">
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">XRP</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-med">MEDIUM</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-XRP" class="pos-price clr-up">$1.36</div>
+        <span id="chg-XRP" class="pos-chg clr-up">-3.11%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">XRP</span></div>
+      <p class="pos-thesis">"Regulatory clarity post-SEC settlement has unlocked institutional interest. Cross-border settlement use case is real and undervalued. Conviction at medium — needs Clarity Act progress and sustained ETF inflow confirmation to upgrade."</p>
+    </div>
+
+    <div class="pos-card long rev">
       <div class="pos-card-head">
         <div class="pos-ticker">SOL</div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1029,27 +1049,11 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-SOL" class="pos-price clr-up">$91.25</div>
-        <span id="chg-SOL" class="pos-chg clr-up">+7.73%</span>
+        <div id="price-SOL" class="pos-price clr-up">$84.65</div>
+        <span id="chg-SOL" class="pos-chg clr-up">-3.83%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Solana</span></div>
       <p class="pos-thesis">"Alpenglow consensus upgrade (Anza) delivers 100–150ms finality via Votor + Rotor. Dominant DEX volume and developer activity intact through the correction. Bought fear, holding for the cycle."</p>
-    </div>
-
-    <div class="pos-card long rev d3">
-      <div class="pos-card-head">
-        <div class="pos-ticker">SUI</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-high">HIGH</span>
-          <span class="badge b-long">LONG</span>
-        </div>
-      </div>
-      <div class="pos-price-row">
-        <div id="price-SUI" class="pos-price clr-up">$0.96</div>
-        <span id="chg-SUI" class="pos-chg clr-up">+3.30%</span>
-      </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">Sui</span></div>
-      <p class="pos-thesis">"Breakout L1 of the 2025-2026 cycle. Move language gives security + parallel processing advantages legacy chains can't match. TVL stayed stable even during the February crash — a sign of loyal developer commitment, not retail speculation."</p>
     </div>
 
     <div class="pos-card long rev">
@@ -1061,30 +1065,46 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-HYPE" class="pos-price clr-up">$29.31</div>
-        <span id="chg-HYPE" class="pos-chg clr-up">+8.91%</span>
+        <div id="price-HYPE" class="pos-price clr-up">$31.82</div>
+        <span id="chg-HYPE" class="pos-chg clr-up">-3.83%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Hyperliquid</span></div>
       <p class="pos-thesis">"On-chain perpetuals done right. Hyperliquid has proven product-market fit at scale — volume that would rank it among the top CEXs. Fully on-chain, no VC extraction, community-first distribution. This is what DeFi infra is supposed to look like."</p>
     </div>
 
-    <div class="pos-card long rev d1">
+    <div class="pos-card long rev">
       <div class="pos-card-head">
-        <div class="pos-ticker">XRP</div>
+        <div class="pos-ticker">SUI</div>
         <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-med">MEDIUM</span>
+          <span class="conv-badge conv-high">HIGH</span>
           <span class="badge b-long">LONG</span>
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-XRP" class="pos-price clr-up">$1.39</div>
-        <span id="chg-XRP" class="pos-chg clr-up">+2.66%</span>
+        <div id="price-SUI" class="pos-price clr-up">$0.9050</div>
+        <span id="chg-SUI" class="pos-chg clr-up">-4.21%</span>
       </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">XRP</span></div>
-      <p class="pos-thesis">"Regulatory clarity post-SEC settlement has unlocked institutional interest. Cross-border settlement use case is real and undervalued. Conviction at medium — needs Clarity Act progress and sustained ETF inflow confirmation to upgrade."</p>
+      <div class="pos-label-row"><span class="pos-name-lbl">Sui</span></div>
+      <p class="pos-thesis">"Breakout L1 of the 2025-2026 cycle. Move language gives security + parallel processing advantages legacy chains can't match. TVL stayed stable even during the February crash — a sign of loyal developer commitment, not retail speculation."</p>
     </div>
 
-    <div class="pos-card watch rev d2">
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">PUMP</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-PUMP" class="pos-price clr-up">$0.001904</div>
+        <span id="chg-PUMP" class="pos-chg clr-up">-6.56%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Pump.fun</span></div>
+      <p class="pos-thesis">"The Solana-native launchpad that turned memecoin creation into a protocol. Revenue sharing with token holders (~$39M distributed) creates a direct link between platform activity and token value. As Solana activity recovers, PUMP is the highest-beta play on the ecosystem's cultural layer."</p>
+    </div>
+
+    <div class="pos-card watch rev">
       <div class="pos-card-head">
         <div class="pos-ticker">PENGU</div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1093,8 +1113,8 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-PENGU" class="pos-price clr-up">$0.007</div>
-        <span id="chg-PENGU" class="pos-chg clr-up">+6.67%</span>
+        <div id="price-PENGU" class="pos-price clr-up">$0.006938</div>
+        <span id="chg-PENGU" class="pos-chg clr-up">-4.77%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Pudgy Penguins</span></div>
       <p class="pos-thesis">"Negative CAC model — physical merchandise drives digital user acquisition at scale. 2M+ units sold into the $31.7B licensed toy market. One of the few NFT-native projects with real-world distribution and brand equity outside crypto."</p>
@@ -1103,61 +1123,13 @@
   </div>
 
   <!-- EQUITIES BLOCK -->
-  <div class="pos-block-label rev" style="margin-top:56px;">
+  <div class="pos-block-label rev">
     <span class="block-tag block-eq">EQUITIES</span>
-    <span class="block-count">10 positions</span>
+    <span class="block-count">11 positions</span>
   </div>
   <div class="pos-grid pos-grid-eq">
 
     <div class="pos-card long rev">
-      <div class="pos-card-head">
-        <div class="pos-ticker">TSLA</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-high">HIGH</span>
-          <span class="badge b-long">LONG</span>
-        </div>
-      </div>
-      <div class="pos-price-row">
-        <div id="price-TSLA" class="pos-price clr-up">$405.94</div>
-        <span id="chg-TSLA" class="pos-chg clr-up">+3.44%</span>
-      </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">Tesla</span></div>
-      <p class="pos-thesis">"Not a car company. An energy, AI, and robotics platform. Optimus robot at scale is the optionality the market hasn't priced. FSD progress turns every vehicle into a data collection node. The thesis is autonomy, not EVs."</p>
-    </div>
-
-    <div class="pos-card long rev d1">
-      <div class="pos-card-head">
-        <div class="pos-ticker">PLTR</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-high">HIGH</span>
-          <span class="badge b-long">LONG</span>
-        </div>
-      </div>
-      <div class="pos-price-row">
-        <div id="price-PLTR" class="pos-price clr-up">$153.11</div>
-        <span id="chg-PLTR" class="pos-chg clr-up">+4.00%</span>
-      </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">Palantir</span></div>
-      <p class="pos-thesis">"The operating system for Western institutional AI. AIP is a moat that compounds with every enterprise and government deployment. Defense contracts + commercial AIP expansion = dual-engine growth in a period where geopolitical spending is accelerating."</p>
-    </div>
-
-    <div class="pos-card long rev d2">
-      <div class="pos-card-head">
-        <div class="pos-ticker">COIN</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-high">HIGH</span>
-          <span class="badge b-long">LONG</span>
-        </div>
-      </div>
-      <div class="pos-price-row">
-        <div id="price-COIN" class="pos-price clr-up">$210</div>
-        <span id="chg-COIN" class="pos-chg clr-up">+14.6%</span>
-      </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">Coinbase</span></div>
-      <p class="pos-thesis">"Custodian for 80%+ of US spot crypto ETF assets. FY25 revenue $7.18B. $11.3B liquidity position. The transition from high-fee broker to low-fee, high-volume financial infrastructure is structurally undervalued. Base network adds a long-duration L2 option."</p>
-    </div>
-
-    <div class="pos-card long rev d3">
       <div class="pos-card-head">
         <div class="pos-ticker">NVDA</div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1166,75 +1138,11 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-NVDA" class="pos-price clr-up">$183.04</div>
-        <span id="chg-NVDA" class="pos-chg clr-up">+1.66%</span>
+        <div id="price-NVDA" class="pos-price clr-up">$182.56</div>
+        <span id="chg-NVDA" class="pos-chg clr-up">-0.26%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Nvidia</span></div>
       <p class="pos-thesis">"The picks-and-shovels of the AI build-out. Every AI model that gets trained and every inference that gets run needs CUDA and H-series hardware. Blackwell architecture extends the moat. 6G and photonics investments show the roadmap extends well beyond current cycle."</p>
-    </div>
-
-    <div class="pos-card long rev">
-      <div class="pos-card-head">
-        <div class="pos-ticker">CRCL</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-high">HIGH</span>
-          <span class="badge b-long">LONG</span>
-        </div>
-      </div>
-      <div class="pos-price-row">
-        <div id="price-CRCL" class="pos-price clr-up">$107.81</div>
-        <span id="chg-CRCL" class="pos-chg clr-up">+2.41%</span>
-      </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">Circle Internet Group</span></div>
-      <p class="pos-thesis">"Not a stablecoin company. A payment rail company. USDC + x402 protocol = the default AI agent-to-agent settlement layer. GENIUS Act is the regulatory catalyst. Trading 64% off its all-time high of $299 — this is a structural discount on the most important stablecoin infrastructure play in the market."</p>
-    </div>
-
-    <div class="pos-card long rev d1">
-      <div class="pos-card-head">
-        <div class="pos-ticker">RKLB</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-high">HIGH</span>
-          <span class="badge b-long">LONG</span>
-        </div>
-      </div>
-      <div class="pos-price-row">
-        <div id="price-RKLB" class="pos-price clr-up">$71.91</div>
-        <span id="chg-RKLB" class="pos-chg clr-up">+2.54%</span>
-      </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">Rocket Lab</span></div>
-      <p class="pos-thesis">"The only credible small-launch competitor to SpaceX with a vertically integrated model. Electron has a consistent launch cadence. Neutron is the medium-lift catalyst. Defense contracts + commercial satellite demand = a durable revenue floor."</p>
-    </div>
-
-    <div class="pos-card long rev d2">
-      <div class="pos-card-head">
-        <div class="pos-ticker">HOOD</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-high">HIGH</span>
-          <span class="badge b-long">LONG</span>
-        </div>
-      </div>
-      <div class="pos-price-row">
-        <div id="price-HOOD" class="pos-price clr-up">$82.21</div>
-        <span id="chg-HOOD" class="pos-chg clr-up">+8.07%</span>
-      </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">Robinhood</span></div>
-      <p class="pos-thesis">"Crypto + equities + options + prediction markets on one platform for a generation that doesn't use banks. The play is the full financial services stack for the digitally native. Crypto bull market is a direct revenue accelerant."</p>
-    </div>
-
-    <div class="pos-card long rev d3">
-      <div class="pos-card-head">
-        <div class="pos-ticker">AMZN</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <span class="conv-badge conv-high">HIGH</span>
-          <span class="badge b-long">LONG</span>
-        </div>
-      </div>
-      <div class="pos-price-row">
-        <div id="price-AMZN" class="pos-price clr-up">$216.82</div>
-        <span id="chg-AMZN" class="pos-chg clr-up">+3.88%</span>
-      </div>
-      <div class="pos-label-row"><span class="pos-name-lbl">Amazon</span></div>
-      <p class="pos-thesis">"AWS is the silent engine of the AI era — every startup, every model, every inference layer runs on it. Advertising + Prime are compounding cash machines funding the AI infrastructure build. Undervalued relative to its infrastructure dominance."</p>
     </div>
 
     <div class="pos-card long rev">
@@ -1246,14 +1154,30 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-GOOGL" class="pos-price clr-up">$303.13</div>
-        <span id="chg-GOOGL" class="pos-chg clr-up">+0.15%</span>
+        <div id="price-GOOGL" class="pos-price clr-up">$299.56</div>
+        <span id="chg-GOOGL" class="pos-chg clr-up">-1.17%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Alphabet / Google</span></div>
       <p class="pos-thesis">"Gemini + Google Cloud + Search = the most distribution-advantaged AI player in the world. The market has consistently underestimated Google's ability to absorb AI disruption into its existing moats. Cloud upside is structurally underpriced."</p>
     </div>
 
-    <div class="pos-card long rev d1">
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">AMZN</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-AMZN" class="pos-price clr-up">$218.93</div>
+        <span id="chg-AMZN" class="pos-chg clr-up">+1.00%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Amazon</span></div>
+      <p class="pos-thesis">"AWS is the silent engine of the AI era — every startup, every model, every inference layer runs on it. Advertising + Prime are compounding cash machines funding the AI infrastructure build. Undervalued relative to its infrastructure dominance."</p>
+    </div>
+
+    <div class="pos-card long rev">
       <div class="pos-card-head">
         <div class="pos-ticker">META</div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1262,14 +1186,110 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-META" class="pos-price clr-up">$660</div>
-        <span id="chg-META" class="pos-chg clr-up">+1.8%</span>
+        <div id="price-META" class="pos-price clr-up">$660.65</div>
+        <span id="chg-META" class="pos-chg clr-up">-1.10%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Meta Platforms</span></div>
       <p class="pos-thesis">"3 billion daily active users is the most valuable AI training dataset on earth. Llama as open-source strategy is a masterstroke — builds ecosystem dominance while commoditizing competitors. AR/VR optionality through Ray-Ban + Orion is underpriced."</p>
     </div>
 
-    <div class="pos-card long rev d2">
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">TSLA</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-TSLA" class="pos-price clr-up">$406.74</div>
+        <span id="chg-TSLA" class="pos-chg clr-up">+5.40%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Tesla</span></div>
+      <p class="pos-thesis">"Not a car company. An energy, AI, and robotics platform. Optimus robot at scale is the optionality the market hasn't priced. FSD progress turns every vehicle into a data collection node. The thesis is autonomy, not EVs."</p>
+    </div>
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">PLTR</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-PLTR" class="pos-price clr-up">$153.59</div>
+        <span id="chg-PLTR" class="pos-chg clr-up">+6.10%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Palantir</span></div>
+      <p class="pos-thesis">"The operating system for Western institutional AI. AIP is a moat that compounds with every enterprise and government deployment. Defense contracts + commercial AIP expansion = dual-engine growth in a period where geopolitical spending is accelerating."</p>
+    </div>
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">HOOD</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-HOOD" class="pos-price clr-up">$77.67</div>
+        <span id="chg-HOOD" class="pos-chg clr-up">+5.83%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Robinhood</span></div>
+      <p class="pos-thesis">"Crypto + equities + options + prediction markets on one platform for a generation that doesn't use banks. The play is the full financial services stack for the digitally native. Crypto bull market is a direct revenue accelerant."</p>
+    </div>
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">COIN</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-COIN" class="pos-price clr-up">$208.93</div>
+        <span id="chg-COIN" class="pos-chg clr-up">+14.57%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Coinbase</span></div>
+      <p class="pos-thesis">"Custodian for 80%+ of US spot crypto ETF assets. FY25 revenue $7.18B. $11.3B liquidity position. The transition from high-fee broker to low-fee, high-volume financial infrastructure is structurally undervalued. Base network adds a long-duration L2 option."</p>
+    </div>
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">RKLB</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-RKLB" class="pos-price clr-up">$72.15</div>
+        <span id="chg-RKLB" class="pos-chg clr-up">+2.54%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Rocket Lab</span></div>
+      <p class="pos-thesis">"The only credible small-launch competitor to SpaceX with a vertically integrated model. Electron has a consistent launch cadence. Neutron is the medium-lift catalyst. Defense contracts + commercial satellite demand = a durable revenue floor."</p>
+    </div>
+
+    <div class="pos-card long rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker">CRCL</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="conv-badge conv-high">HIGH</span>
+          <span class="badge b-long">LONG</span>
+        </div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-CRCL" class="pos-price clr-up">$108.69</div>
+        <span id="chg-CRCL" class="pos-chg clr-up">+5.66%</span>
+      </div>
+      <div class="pos-label-row"><span class="pos-name-lbl">Circle Internet Group</span></div>
+      <p class="pos-thesis">"Not a stablecoin company. A payment rail company. USDC + x402 protocol = the default AI agent-to-agent settlement layer. GENIUS Act is the regulatory catalyst. Trading 64% off its all-time high of $299 — this is a structural discount on the most important stablecoin infrastructure play in the market."</p>
+    </div>
+
+    <div class="pos-card long rev">
       <div class="pos-card-head">
         <div class="pos-ticker">GLXY</div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1278,8 +1298,8 @@
         </div>
       </div>
       <div class="pos-price-row">
-        <div id="price-GLXY" class="pos-price clr-up">$28.40</div>
-        <span id="chg-GLXY" class="pos-chg clr-up">+6.2%</span>
+        <div id="price-GLXY" class="pos-price clr-up">$23.24</div>
+        <span id="chg-GLXY" class="pos-chg clr-up">+7.87%</span>
       </div>
       <div class="pos-label-row"><span class="pos-name-lbl">Galaxy Digital</span></div>
       <p class="pos-thesis">"The Goldman Sachs of digital assets. Trading desk + asset management + investment banking for the crypto-native institution. Positioned at every layer of the institutional crypto stack. Structural beneficiary of every bull cycle and every new product launch in the space."</p>
@@ -1610,16 +1630,7 @@ function refreshBlock() {
 refreshBlock();
 setInterval(refreshBlock, 12000);
 
-// ──────────────────────────────────────────────────
-// BTC PRICE TICKER
-// ──────────────────────────────────────────────────
-function tickPrice() {
-  const el = document.getElementById('btc-live');
-  if (!el) return;
-  const v = 72340 + (Math.random() - 0.5) * 240;
-  el.textContent = '$' + Math.round(v).toLocaleString();
-}
-setInterval(tickPrice, 7000);
+// BTC top ticker is driven by the live oracle below — no fake simulation
 
 // ──────────────────────────────────────────────────
 // SCROLL REVEAL
@@ -1656,29 +1667,9 @@ window.addEventListener('scroll', () => {
 // ╚══════════════════════════════════════════════════════════════╝
 (function () {
 
-  // ─── ENVIRONMENT GUARD ──────────────────────────────────────
-  // Claude's preview sandbox and file:// both block all external
-  // network requests. Detect this and show a clean banner instead
-  // of flooding the console with errors.
-  const IS_GITHUB = window.location.hostname.includes('github.io') ||
-                    window.location.hostname.includes('tokenzen');
-  const IS_LOCAL  = window.location.protocol === 'file:';
-  const IN_SANDBOX = !IS_GITHUB && !IS_LOCAL &&
-                     (window.location.hostname === 'localhost' ||
-                      window.self !== window.top ||
-                      window.location.hostname === '');
-
-  if (IS_LOCAL || IN_SANDBOX) {
-    // Show clean non-intrusive status — no API calls attempted
-    const ts = document.getElementById('price-timestamp');
-    if (ts) {
-      ts.textContent = IS_LOCAL
-        ? '⚠ Open tokenzen.github.io for live prices'
-        : '⚠ Live prices active on tokenzen.github.io';
-      ts.style.color = '#f5a623';
-    }
-    return; // Exit — do not attempt any network calls
-  }
+  // ─── NO ENVIRONMENT GUARD — oracle runs everywhere ──────────
+  // Binance WSS + CoinGecko REST + Finnhub WSS all support CORS
+  // and work from file://, localhost, and any hosted domain.
 
   // ─── CONFIG ─────────────────────────────────────────────────
   const FINNHUB_KEY          = 'd6l27chr01qptf3ohnpgd6l27chr01qptf3ohnq0';
@@ -1695,6 +1686,7 @@ window.addEventListener('scroll', () => {
     SUI : 'suiusdt',
     XRP : 'xrpusdt',
     HYPE: 'hypeusdt',
+    PUMP: 'pumpusdt',
   };
 
   // CoinGecko IDs for REST (PENGU not on Binance)
@@ -1706,6 +1698,7 @@ window.addEventListener('scroll', () => {
     XRP  : 'ripple',
     HYPE : 'hyperliquid',
     PENGU: 'pudgy-penguins',
+    PUMP : 'pump-fun',
   };
 
   const EQUITIES = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY'];
@@ -1796,8 +1789,6 @@ window.addEventListener('scroll', () => {
         const data = msg.data;
         if (!data || !data.s) return;
 
-        // Find which ticker this stream is for
-        const sym = data.s.replace('USDT','').replace('usdt','');
         const ticker = Object.keys(BINANCE_STREAMS).find(
           k => BINANCE_STREAMS[k].toUpperCase() === data.s
         );
@@ -1808,6 +1799,13 @@ window.addEventListener('scroll', () => {
         const chg   = open ? ((price - open) / open) * 100 : null;
 
         updateCard(ticker, price, chg, true);
+
+        // Keep top-bar BTC ticker in sync with real oracle price
+        if (ticker === 'BTC') {
+          const btcEl = document.getElementById('btc-live');
+          if (btcEl) btcEl.textContent = '$' + Math.round(price).toLocaleString();
+        }
+
         stampTime();
       } catch(err) {}
     };
@@ -1819,7 +1817,9 @@ window.addEventListener('scroll', () => {
     };
   }
 
-  // ─── CRYPTO: COINGECKO REST (PENGU + 24h change backup) ──────
+  // ─── CRYPTO: COINGECKO REST (initial seed + PENGU + 24h change) ─
+  // Runs on load to populate all cards immediately, then every 20s
+  // for PENGU (no Binance feed) + to keep 24h % accurate.
   async function fetchCoinGecko() {
     const ids = Object.values(COINGECKO_IDS).join(',');
     try {
@@ -1835,12 +1835,17 @@ window.addEventListener('scroll', () => {
         const price = d[id].usd;
         const chg   = d[id].usd_24h_change ?? 0;
 
-        // PENGU: Binance doesn't have it, so CoinGecko is the source
-        // Others: Only update 24h change %, Binance handles live price
-        if (ticker === 'PENGU') {
-          updateCard('PENGU', price, chg, false);
+        // Always seed price if Binance hasn't set it yet (prevPrice empty)
+        // After first WS tick, Binance owns the price; CG only refreshes 24h %
+        if (ticker === 'PENGU' || prevPrice[ticker] == null) {
+          updateCard(ticker, price, chg, false);
+          // Also seed top-bar BTC ticker on first load
+          if (ticker === 'BTC') {
+            const btcEl = document.getElementById('btc-live');
+            if (btcEl) btcEl.textContent = '$' + Math.round(price).toLocaleString();
+          }
         } else {
-          // Update day change % only — don't overwrite Binance live price
+          // WS is live — just refresh 24h change %
           dayChangePct[ticker] = chg;
           const cEl = document.getElementById('chg-' + ticker);
           if (cEl) {
@@ -1895,8 +1900,6 @@ window.addEventListener('scroll', () => {
         finnhubWS.send(JSON.stringify({ type: 'subscribe', symbol: sym }));
       });
       setStatus('⬤ Streaming live', '#00ff88');
-      // Immediately load prices + 24h change via REST
-      fetchAllEquitiesREST();
     };
 
     finnhubWS.onmessage = (e) => {
@@ -1921,12 +1924,13 @@ window.addEventListener('scroll', () => {
 
   // ─── BOOTSTRAP ───────────────────────────────────────────────
   function init() {
-    // Crypto
-    connectBinanceWS();
+    // Crypto — seed prices immediately via REST, WS takes over after
     fetchCoinGecko();
     setInterval(fetchCoinGecko, COINGECKO_INTERVAL);
+    connectBinanceWS();
 
-    // Equities
+    // Equities — seed prices immediately via REST, WS delivers live ticks
+    fetchAllEquitiesREST();
     connectFinnhubWS();
     // REST fallback only when WS is down
     setInterval(() => {
