@@ -1829,8 +1829,55 @@ window.addEventListener('scroll', () => {
     };
   }
 
+  // ─── FILE:// PROTOCOL DETECTION ────────────────────────────────
+  function isLocalFile() {
+    return window.location.protocol === 'file:';
+  }
+
+  function showLocalFileBanner() {
+    // Inject a sticky banner at the top of the page
+    const banner = document.createElement('div');
+    banner.id = 'local-file-banner';
+    banner.innerHTML = `
+      <div style="
+        position:fixed; top:0; left:0; right:0; z-index:9999;
+        background:linear-gradient(90deg,#1a0a00,#2a1200,#1a0a00);
+        border-bottom:1px solid #f5a623;
+        padding:10px 24px;
+        display:flex; align-items:center; gap:14px;
+        font-family:'JetBrains Mono',monospace; font-size:12px;
+      ">
+        <span style="font-size:18px;">⚠</span>
+        <span style="color:#f5a623; font-weight:600; letter-spacing:.05em;">LOCAL FILE MODE</span>
+        <span style="color:rgba(255,255,255,0.6);">Live prices are disabled when opened from disk. For real-time data, visit the hosted version:</span>
+        <a href="https://tokenzen.github.io" target="_blank" style="
+          color:#00ff88; text-decoration:none; font-weight:700;
+          border:1px solid #00ff88; padding:3px 10px; border-radius:4px;
+          white-space:nowrap;
+          transition:background .2s;
+        " onmouseover="this.style.background='rgba(0,255,136,0.12)'"
+           onmouseout="this.style.background='transparent'">
+          tokenzen.github.io ↗
+        </a>
+        <span style="margin-left:auto; color:rgba(255,255,255,0.3); cursor:pointer; font-size:16px;"
+              onclick="document.getElementById('local-file-banner').remove()">✕</span>
+      </div>
+    `;
+    document.body.prepend(banner);
+    // Push content down so banner doesn't overlap nav
+    document.body.style.paddingTop = '48px';
+
+    // Update oracle status
+    setStatus('⚠ Open tokenzen.github.io for live prices', '#f5a623');
+  }
+
   // ─── BOOTSTRAP ─────────────────────────────────────────────────
   function init() {
+    if (isLocalFile()) {
+      showLocalFileBanner();
+      return; // Don't attempt any API calls — they will all fail
+    }
+
     // Crypto: start immediately, then every 15s
     fetchCrypto();
     setInterval(fetchCrypto, CRYPTO_INTERVAL_MS);
@@ -1838,7 +1885,7 @@ window.addEventListener('scroll', () => {
     // Equities: WebSocket for live ticks + REST every 30s as backup
     connectFinnhubWS();
     setInterval(() => {
-      if (!wsAlive) fetchAllEquityREST();   // Only REST-poll if WS is down
+      if (!wsAlive) fetchAllEquityREST();
     }, EQUITY_REST_INTERVAL_MS);
   }
 
