@@ -2603,15 +2603,24 @@ window.addEventListener('scroll', () => {
           if (!EQUITIES.includes(trade.s)) continue;
           updateCard(trade.s, trade.p, dayChangePct[trade.s], true);
 
-          // If this tick is a commodity ETF, push scaled price to the commodity card too
+          // If this tick is a commodity ETF, push scaled price + chg to the commodity card
           const comm = COMMODITY_ETF_MAP[trade.s];
           if (comm) {
             const spotPrice = trade.p * comm.scale;
-            const up = spotPrice >= (parseFloat(document.getElementById('price-' + comm.ticker)?.textContent?.replace(/[$,]/g, '')) || spotPrice);
+            const prevText  = document.getElementById('price-' + comm.ticker)?.textContent?.replace(/[$,]/g, '');
+            const prevPrice = parseFloat(prevText) || spotPrice;
+            const up        = spotPrice >= prevPrice;
+            const chgPct    = dayChangePct[trade.s] ?? 0;
+
             const pEl = document.getElementById('price-' + comm.ticker);
+            const cEl = document.getElementById('chg-'   + comm.ticker);
             if (pEl) {
               pEl.textContent = '$' + spotPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
               pEl.style.color = up ? '#CD853F' : '#b05a20';
+            }
+            if (cEl) {
+              cEl.textContent = (chgPct >= 0 ? '+' : '') + chgPct.toFixed(2) + '%';
+              cEl.style.color = up ? '#CD853F' : '#b05a20';
             }
           }
         }
