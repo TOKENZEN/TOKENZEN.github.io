@@ -2558,58 +2558,50 @@ window.addEventListener('scroll', () => {
     }
   }
 
-  // ─── COMMODITIES: METALS.LIVE SPOT PRICES ────────────────────
-  // Free API, no key required. Returns troy oz prices for precious metals,
-  // price per pound for copper. Refreshes every 60s.
+  // ─── COMMODITIES: YAHOO FINANCE FUTURES PRICES ────────────────
+  // Uses Yahoo Finance chart API — no key, CORS-open, reliable from browsers.
+  // GC=F = Gold futures, HG=F = Copper futures, PA=F = Palladium futures.
+  // Refreshes every 60s. Price = regularMarketPrice, 24h% from previousClose.
   const METALS_INTERVAL = 60000;
-  let prevMetalPrice = {};
+
+  const COMMODITY_MAP = [
+    { symbol: 'GC%3DF', ticker: 'XAUUSD', name: 'Gold'      },
+    { symbol: 'HG%3DF', ticker: 'XCUUSD', name: 'Copper'    },
+    { symbol: 'PA%3DF', ticker: 'XPDUSD', name: 'Palladium' },
+  ];
+
+  async function fetchOneCommodity({ symbol, ticker }) {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=5d`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    const meta = d.chart.result[0].meta;
+    return { ticker, price: meta.regularMarketPrice, prev: meta.previousClose };
+  }
 
   async function fetchMetals() {
-    try {
-      const r = await fetch('https://api.metals.live/v1/spot/gold,copper,palladium');
-      if (!r.ok) throw new Error(r.status);
-      const data = await r.json();
-
-      // data is an array of objects: [{ gold: 3234.5 }, { copper: 4.82 }, { palladium: 940.2 }]
-      const prices = {};
-      data.forEach(obj => Object.assign(prices, obj));
-
-      // Map to our card IDs
-      const map = {
-        gold:      'XAUUSD',
-        copper:    'XCUUSD',
-        palladium: 'XPDUSD',
-      };
-
-      for (const [metal, ticker] of Object.entries(map)) {
-        const price = prices[metal];
-        if (price == null) continue;
-
+    for (const asset of COMMODITY_MAP) {
+      try {
+        const { ticker, price, prev } = await fetchOneCommodity(asset);
         const pEl = document.getElementById('price-' + ticker);
-        const cEl = document.getElementById('chg-' + ticker);
-        if (!pEl) continue;
+        const cEl = document.getElementById('chg-'   + ticker);
+        if (!pEl || price == null) continue;
 
-        const prev = prevMetalPrice[ticker];
-        const up   = prev == null ? true : price >= prev;
+        const up  = prev == null ? true : price >= prev;
+        const chg = prev ? ((price - prev) / prev) * 100 : null;
 
         pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         pEl.style.color = up ? '#CD853F' : '#b05a20';
 
-        // No 24h change from this API — show live direction arrow instead
-        if (cEl && prev != null) {
-          const diff    = price - prev;
-          const diffPct = (diff / prev) * 100;
-          cEl.textContent = (diffPct >= 0 ? '+' : '') + diffPct.toFixed(2) + '%';
+        if (cEl) {
+          cEl.textContent = chg != null ? (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%' : '—';
           cEl.style.color = up ? '#CD853F' : '#b05a20';
         }
-
-        prevMetalPrice[ticker] = price;
+      } catch (e) {
+        console.warn('[TZ] Commodity fetch failed (' + asset.name + '):', e.message);
       }
-
-      stampTime();
-    } catch (e) {
-      console.warn('[TZ] metals.live fetch failed:', e.message);
     }
+    stampTime();
   }
 
   // ─── BOOTSTRAP ───────────────────────────────────────────────
