@@ -1853,18 +1853,18 @@
       <p class="pos-thesis">"Industrial automation + electrification + digital infrastructure — a quality compounder at the intersection of industrial AI and energy transition. Watching European capex cycle and factory automation demand."</p>
     </div>
 
-    <!-- Schneider Electric -->
+    <!-- Siemens Energy -->
 
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
-        <div class="pos-ticker-row"><img class="asset-logo" id="logo-SMEGF" src="https://logo.clearbit.com/se.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Schneider Electric <span class="pos-name-ticker">(SMEGF)</span></span></div>
+        <div class="pos-ticker-row"><img class="asset-logo" id="logo-SMNEY" src="https://logo.clearbit.com/siemens-energy.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Siemens Energy <span class="pos-name-ticker">(SMNEY)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
       </div>
       <div class="pos-price-row">
-        <div id="price-SMEGF" class="pos-price clr-pu">—</div>
-        <span id="chg-SMEGF" class="pos-chg clr-pu">—</span>
+        <div id="price-SMNEY" class="pos-price clr-pu">—</div>
+        <span id="chg-SMNEY" class="pos-chg clr-pu">—</span>
       </div>
-      <p class="pos-thesis">"Energy management and industrial automation at global scale. Direct beneficiary of the AI data center power infrastructure buildout. Watching data center order flow and European energy policy tailwinds."</p>
+      <p class="pos-thesis">"Grid infrastructure, power transmission, and offshore wind at global scale. Direct beneficiary of the AI data center power buildout and European energy independence push. Watching order book growth and grid modernization contract cadence."</p>
     </div>
         </div>
       </div>
@@ -2312,7 +2312,7 @@ window.addEventListener('scroll', () => {
 
   const EQUITIES = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY',
                     'AAPL','AMD','ASTS','AVGO','BE','CLSK','CRWV','CVX','DDOG',
-                    'IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMEGF'];
+                    'IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMNEY'];
 
   // ─── STATE ──────────────────────────────────────────────────
   const prevPrice  = {};
@@ -2557,6 +2557,61 @@ window.addEventListener('scroll', () => {
       console.warn('[TZ] CoinGecko logos error:', e.message);
     }
   }
+
+  // ─── COMMODITIES: METALS.LIVE SPOT PRICES ────────────────────
+  // Free API, no key required. Returns troy oz prices for precious metals,
+  // price per pound for copper. Refreshes every 60s.
+  const METALS_INTERVAL = 60000;
+  let prevMetalPrice = {};
+
+  async function fetchMetals() {
+    try {
+      const r = await fetch('https://api.metals.live/v1/spot/gold,copper,palladium');
+      if (!r.ok) throw new Error(r.status);
+      const data = await r.json();
+
+      // data is an array of objects: [{ gold: 3234.5 }, { copper: 4.82 }, { palladium: 940.2 }]
+      const prices = {};
+      data.forEach(obj => Object.assign(prices, obj));
+
+      // Map to our card IDs
+      const map = {
+        gold:      'XAUUSD',
+        copper:    'XCUUSD',
+        palladium: 'XPDUSD',
+      };
+
+      for (const [metal, ticker] of Object.entries(map)) {
+        const price = prices[metal];
+        if (price == null) continue;
+
+        const pEl = document.getElementById('price-' + ticker);
+        const cEl = document.getElementById('chg-' + ticker);
+        if (!pEl) continue;
+
+        const prev = prevMetalPrice[ticker];
+        const up   = prev == null ? true : price >= prev;
+
+        pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        pEl.style.color = up ? '#CD853F' : '#b05a20';
+
+        // No 24h change from this API — show live direction arrow instead
+        if (cEl && prev != null) {
+          const diff    = price - prev;
+          const diffPct = (diff / prev) * 100;
+          cEl.textContent = (diffPct >= 0 ? '+' : '') + diffPct.toFixed(2) + '%';
+          cEl.style.color = up ? '#CD853F' : '#b05a20';
+        }
+
+        prevMetalPrice[ticker] = price;
+      }
+
+      stampTime();
+    } catch (e) {
+      console.warn('[TZ] metals.live fetch failed:', e.message);
+    }
+  }
+
   // ─── BOOTSTRAP ───────────────────────────────────────────────
   function init() {
     // Crypto — seed prices + logos immediately
@@ -2572,6 +2627,10 @@ window.addEventListener('scroll', () => {
     setInterval(() => {
       if (!finnhubAlive) fetchAllEquitiesREST();
     }, REST_FALLBACK_INTERVAL);
+
+    // Commodities — metals.live spot prices
+    fetchMetals();
+    setInterval(fetchMetals, METALS_INTERVAL);
   }
 
   if (document.readyState === 'loading') {
