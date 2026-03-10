@@ -2493,39 +2493,65 @@ window.addEventListener('scroll', () => {
   }
 
   // ─── EQUITIES: FINNHUB REST ───────────────────────────────────
-  async function fetchFinnhubREST(ticker) {
+  // Fetches a single ticker with up to 3 retries on failure/rate-limit.
+  // Returns true if price was successfully populated, false otherwise.
+  async function fetchFinnhubREST(ticker, attempt = 0) {
     try {
       const r = await fetch(
         'https://finnhub.io/api/v1/quote?symbol=' + ticker + '&token=' + FINNHUB_KEY
       );
-      if (!r.ok) throw new Error(r.status);
+      // 429 = rate limited — wait and retry
+      if (r.status === 429 && attempt < 3) {
+        await new Promise(res => setTimeout(res, 700 * (attempt + 1)));
+        return fetchFinnhubREST(ticker, attempt + 1);
+      }
+      if (!r.ok) throw new Error('HTTP ' + r.status);
       const d = await r.json();
-      if (d && d.c) {
-        const chg = d.pc ? ((d.c - d.pc) / d.pc) * 100 : 0;
-        updateCard(ticker, d.c, chg, false);
-        dayChangePct[ticker] = chg;
+      if (!d || !d.c || d.c === 0) {
+        // Empty response — retry once after short delay
+        if (attempt < 2) {
+          await new Promise(res => setTimeout(res, 400));
+          return fetchFinnhubREST(ticker, attempt + 1);
+        }
+        return false;
+      }
 
-        // If this is a commodity ETF, also update the commodity spot card
-        const comm = COMMODITY_ETF_MAP[ticker];
-        if (comm) {
-          const spotPrice = d.c  * comm.scale;
-          const spotPrev  = d.pc * comm.scale;
-          const up  = spotPrice >= spotPrev;
-          const pEl = document.getElementById('price-' + comm.ticker);
-          const cEl = document.getElementById('chg-'   + comm.ticker);
-          if (pEl) {
-            pEl.textContent = '$' + spotPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            pEl.style.color = up ? '#CD853F' : '#b05a20';
-          }
-          if (cEl) {
-            cEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
-            cEl.style.color = up ? '#CD853F' : '#b05a20';
-          }
+      const chg = d.pc ? ((d.c - d.pc) / d.pc) * 100 : 0;
+      updateCard(ticker, d.c, chg, false);
+      dayChangePct[ticker] = chg;
+
+      // If this is a commodity ETF, also update the commodity spot card
+      const comm = COMMODITY_ETF_MAP[ticker];
+      if (comm) {
+        const spotPrice = d.c  * comm.scale;
+        const spotPrev  = d.pc * comm.scale;
+        const up  = spotPrice >= spotPrev;
+        const pEl = document.getElementById('price-' + comm.ticker);
+        const cEl = document.getElementById('chg-'   + comm.ticker);
+        if (pEl) {
+          pEl.textContent = '$' + spotPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          pEl.style.color = up ? '#CD853F' : '#b05a20';
+        }
+        if (cEl) {
+          cEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+          cEl.style.color = up ? '#CD853F' : '#b05a20';
         }
       }
+      return true;
     } catch(e) {
-      console.warn('[TZ] Finnhub REST (' + ticker + '):', e.message);
+      if (attempt < 2) {
+        await new Promise(res => setTimeout(res, 500 * (attempt + 1)));
+        return fetchFinnhubREST(ticker, attempt + 1);
+      }
+      console.warn('[TZ] Finnhub REST gave up (' + ticker + '):', e.message);
+      return false;
     }
+  }
+
+  // Card is considered unpopulated if its price element still shows '—'
+  function cardIsEmpty(ticker) {
+    const pEl = document.getElementById('price-' + ticker);
+    return pEl && (pEl.textContent === '—' || pEl.textContent === '');
   }
 
   async function fetchAllEquitiesREST() {
@@ -2533,13 +2559,23 @@ window.addEventListener('scroll', () => {
     await Promise.all(EQUITIES_POSITIONS.map(sym => fetchFinnhubREST(sym)));
     stampTime();
 
-    // Wave 2: watchlist — one ticker every 80ms, starting 300ms after wave 1.
-    // Sequential spacing is the most reliable way to avoid Finnhub rate limiting.
-    // 24 tickers × 80ms = ~1.9s to fully populate — consistent every load.
-    let delay = 300;
+    // Wave 2: watchlist — sequential, 100ms between each to stay under rate limit.
+    // 24 tickers × 100ms = ~2.4s, then a cleanup retry pass for any missed cards.
     for (const sym of EQUITIES_WATCHLIST) {
-      setTimeout(() => fetchFinnhubREST(sym).then(stampTime), delay);
-      delay += 80;
+      await fetchFinnhubREST(sym);
+      await new Promise(res => setTimeout(res, 100));
+      stampTime();
+    }
+
+    // Cleanup pass: retry any cards that still show '—' (caught by rate limiter)
+    const missed = EQUITIES_WATCHLIST.filter(sym => cardIsEmpty(sym));
+    if (missed.length > 0) {
+      console.log('[TZ] Retrying ' + missed.length + ' missed watchlist cards:', missed);
+      for (const sym of missed) {
+        await fetchFinnhubREST(sym);
+        await new Promise(res => setTimeout(res, 200));
+        stampTime();
+      }
     }
   }
 
