@@ -2313,7 +2313,18 @@ window.addEventListener('scroll', () => {
 
   const EQUITIES = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY',
                     'AAPL','AMD','ASTS','AVGO','BE','CLSK','CRWV','CVX','DDOG',
-                    'BLSH','IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMNEY'];
+                    'BLSH','IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMNEY',
+                    'GLD','PALL','CPER'];
+
+  // ETF → commodity card mapping with scale factors
+  // GLD:  1 share = 0.09637 oz gold     → spot = price × 10.377
+  // PALL: 1 share = 0.09667 oz palladium → spot = price × 10.344
+  // CPER: futures NAV → copper $/lb      → spot = price × 0.219
+  const COMMODITY_ETF_MAP = {
+    'GLD':  { ticker: 'XAUUSD', scale: 10.377 },
+    'PALL': { ticker: 'XPDUSD', scale: 10.344 },
+    'CPER': { ticker: 'XCUUSD', scale: 0.219  },
+  };
 
   // ─── STATE ──────────────────────────────────────────────────
   const prevPrice  = {};
@@ -2484,6 +2495,24 @@ window.addEventListener('scroll', () => {
         const chg = d.pc ? ((d.c - d.pc) / d.pc) * 100 : 0;
         updateCard(ticker, d.c, chg, false);
         dayChangePct[ticker] = chg;
+
+        // If this is a commodity ETF, also update the commodity spot card
+        const comm = COMMODITY_ETF_MAP[ticker];
+        if (comm) {
+          const spotPrice = d.c  * comm.scale;
+          const spotPrev  = d.pc * comm.scale;
+          const up  = spotPrice >= spotPrev;
+          const pEl = document.getElementById('price-' + comm.ticker);
+          const cEl = document.getElementById('chg-'   + comm.ticker);
+          if (pEl) {
+            pEl.textContent = '$' + spotPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            pEl.style.color = up ? '#CD853F' : '#b05a20';
+          }
+          if (cEl) {
+            cEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+            cEl.style.color = up ? '#CD853F' : '#b05a20';
+          }
+        }
       }
     } catch(e) {
       console.warn('[TZ] Finnhub REST (' + ticker + '):', e.message);
@@ -2558,80 +2587,6 @@ window.addEventListener('scroll', () => {
     }
   }
 
-  // ─── COMMODITIES: MULTI-SOURCE PRICE ORACLE ─────────────────
-  // Source 1 (primary): corsproxy.io → Yahoo Finance futures
-  //   GC=F  = Gold     $/troy oz  ~$5,100
-  //   HG=F  = Copper   $/lb       ~$5.90
-  //   PA=F  = Palladium $/troy oz ~$1,700
-  // Source 2 (fallback): Finnhub ETF quotes × exact oz/share ratio
-  //   GLD  × 10.377 = Gold spot
-  //   CPER × 0.219  = Copper $/lb  (empirical, recal if Cu moves >10%)
-  //   PALL × 10.344 = Palladium spot
-  const METALS_INTERVAL = 60000;
-
-  const COMMODITY_FUTURES = [
-    { yahoo: 'GC%3DF', etf: 'GLD',  etfScale: 10.377, ticker: 'XAUUSD', name: 'Gold'      },
-    { yahoo: 'HG%3DF', etf: 'CPER', etfScale: 0.219,  ticker: 'XCUUSD', name: 'Copper'    },
-    { yahoo: 'PA%3DF', etf: 'PALL', etfScale: 10.344, ticker: 'XPDUSD', name: 'Palladium' },
-  ];
-
-  function updateCommodityCard(ticker, price, prev) {
-    const pEl = document.getElementById('price-' + ticker);
-    const cEl = document.getElementById('chg-'   + ticker);
-    if (!pEl || !price || isNaN(price)) return false;
-
-    const up  = prev == null ? true : price >= prev;
-    const chg = prev ? ((price - prev) / prev) * 100 : null;
-
-    pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    pEl.style.color = up ? '#CD853F' : '#b05a20';
-    if (cEl) {
-      cEl.textContent = chg != null ? (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%' : '—';
-      cEl.style.color = up ? '#CD853F' : '#b05a20';
-    }
-    return true;
-  }
-
-  async function fetchOneCommodity({ yahoo, etf, etfScale, ticker, name }) {
-    // ── Source 1: corsproxy.io → Yahoo Finance actual futures price ──
-    try {
-      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(
-        'https://query1.finance.yahoo.com/v8/finance/chart/' + yahoo + '?interval=1d&range=2d'
-      );
-      const r = await fetch(proxyUrl);
-      if (!r.ok) throw new Error('proxy HTTP ' + r.status);
-      const d = await r.json();
-      const meta  = d?.chart?.result?.[0]?.meta;
-      const price = meta?.regularMarketPrice;
-      const prev  = meta?.chartPreviousClose ?? meta?.previousClose;
-      if (!price) throw new Error('no price in response');
-      console.log('[TZ] ' + name + ' via Yahoo: $' + price);
-      updateCommodityCard(ticker, price, prev);
-      return;
-    } catch (e1) {
-      console.warn('[TZ] ' + name + ' Yahoo failed:', e1.message, '— trying Finnhub ETF fallback');
-    }
-
-    // ── Source 2: Finnhub ETF quote × scale factor ───────────────────
-    try {
-      const r = await fetch('https://finnhub.io/api/v1/quote?symbol=' + etf + '&token=' + FINNHUB_KEY);
-      if (!r.ok) throw new Error('finnhub HTTP ' + r.status);
-      const d = await r.json();
-      if (!d?.c || d.c === 0) throw new Error('zero/null price from Finnhub for ' + etf);
-      const price = d.c  * etfScale;
-      const prev  = d.pc ? d.pc * etfScale : null;
-      console.log('[TZ] ' + name + ' via Finnhub ETF (' + etf + ' × ' + etfScale + '): $' + price.toFixed(2));
-      updateCommodityCard(ticker, price, prev);
-      return;
-    } catch (e2) {
-      console.error('[TZ] ' + name + ' ALL sources failed. Finnhub error:', e2.message);
-    }
-  }
-
-  async function fetchMetals() {
-    await Promise.all(COMMODITY_FUTURES.map(c => fetchOneCommodity(c)));
-    stampTime();
-  }
 
   // ─── BOOTSTRAP ───────────────────────────────────────────────
   function init() {
@@ -2649,9 +2604,7 @@ window.addEventListener('scroll', () => {
       if (!finnhubAlive) fetchAllEquitiesREST();
     }, REST_FALLBACK_INTERVAL);
 
-    // Commodities — metals.live spot prices
-    fetchMetals();
-    setInterval(fetchMetals, METALS_INTERVAL);
+    // Commodities — priced via GLD/PALL/CPER in EQUITIES (Finnhub)
   }
 
   if (document.readyState === 'loading') {
