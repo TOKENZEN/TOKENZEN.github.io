@@ -370,9 +370,9 @@
       background: linear-gradient(160deg, rgba(0,212,200,0.07) 0%, var(--bg-3) 60%);
     }
     .card-crypto .b-long {
-      background: rgba(0,212,200,0.08);
-      color: var(--teal);
-      border: 1px solid rgba(0,212,200,0.28);
+      background: rgba(0,212,200,0.08) !important;
+      color: var(--teal) !important;
+      border: 1px solid rgba(0,212,200,0.28) !important;
     }
 
     /* Equities — Purple */
@@ -388,9 +388,9 @@
       background: linear-gradient(160deg, rgba(155,126,200,0.07) 0%, var(--bg-3) 60%);
     }
     .card-eq .b-long {
-      background: rgba(155,126,200,0.08);
-      color: var(--purple-bright);
-      border: 1px solid rgba(155,126,200,0.28);
+      background: rgba(155,126,200,0.08) !important;
+      color: var(--purple-bright) !important;
+      border: 1px solid rgba(155,126,200,0.28) !important;
     }
 
     /* Watchlist — Amber */
@@ -406,9 +406,32 @@
       background: linear-gradient(160deg, rgba(255,170,0,0.06) 0%, var(--bg-3) 60%);
     }
     .card-watch .b-watch {
-      background: rgba(255,170,0,0.08);
-      color: #FFAA00;
-      border: 1px solid rgba(255,170,0,0.28);
+      background: rgba(255,170,0,0.08) !important;
+      color: #FFAA00 !important;
+      border: 1px solid rgba(255,170,0,0.28) !important;
+    }
+
+    /* Commodities — Copper */
+    .pos-card.card-commodity {
+      border-color: rgba(205,133,63,0.18);
+      background: linear-gradient(160deg, rgba(205,133,63,0.04) 0%, var(--bg-2) 60%);
+    }
+    .pos-card.card-commodity::before {
+      background: linear-gradient(90deg, #CD853F, transparent);
+    }
+    .pos-card.card-commodity:hover {
+      border-color: rgba(205,133,63,0.50);
+      background: linear-gradient(160deg, rgba(205,133,63,0.08) 0%, var(--bg-3) 60%);
+    }
+    .card-commodity .b-watch {
+      background: rgba(205,133,63,0.10) !important;
+      color: #CD853F !important;
+      border: 1px solid rgba(205,133,63,0.32) !important;
+    }
+    .block-commodity {
+      background: rgba(205,133,63,0.06);
+      border: 1px solid rgba(205,133,63,0.28);
+      color: #CD853F;
     }
 
     .pos-card:hover {
@@ -450,9 +473,9 @@
       text-transform: uppercase;
       padding: 4px 10px;
     }
-    .b-long { background: rgba(0,255,136,0.08); color: var(--green); border: 1px solid rgba(0,255,136,0.25); }
-    .b-short { background: rgba(255,59,91,0.08); color: var(--red); border: 1px solid rgba(255,59,91,0.25); }
-    .b-watch { background: rgba(155,126,200,0.08); color: var(--purple-bright); border: 1px solid rgba(155,126,200,0.25); }
+    .b-long  { background: rgba(160,160,192,0.06); color: var(--text-1); border: 1px solid rgba(160,160,192,0.18); }
+    .b-short { background: rgba(255,59,91,0.08);  color: var(--red);    border: 1px solid rgba(255,59,91,0.25); }
+    .b-watch { background: rgba(160,160,192,0.06); color: var(--text-1); border: 1px solid rgba(160,160,192,0.18); }
 
     .pos-price-row {
       display: flex;
@@ -1680,6 +1703,54 @@
         <span id="chg-SMEGF" class="pos-chg clr-pu">—</span>
       </div>
       <p class="pos-thesis">"Energy management and industrial automation at global scale. Direct beneficiary of the AI data center power infrastructure buildout. Watching data center order flow and European energy policy tailwinds."</p>
+    </div>
+
+  </div>
+
+  <!-- COMMODITIES BLOCK -->
+  <div class="pos-block-label rev">
+    <span class="block-tag block-commodity">COMMODITIES</span>
+    <span class="block-count">3 assets</span>
+  </div>
+  <div class="pos-grid pos-grid-watch">
+
+    <!-- Gold -->
+    <div class="pos-card watch rev card-commodity">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" id="logo-XAUUSD" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Gold_nugget_%28placer%29_%28Yukon%2C_Canada%29_3.jpg/120px-Gold_nugget_%28placer%29_%28Yukon%2C_Canada%29_3.jpg" style="border-radius:50%;object-fit:cover;width:28px;height:28px;" onerror="this.style.display='none'"><span class="pos-name-lbl">Gold <span class="pos-name-ticker">(XAU/USD)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-XAUUSD" class="pos-price" style="color:#CD853F;">—</div>
+        <span id="chg-XAUUSD" class="pos-chg" style="color:#CD853F;">—</span>
+      </div>
+      <p class="pos-thesis">"The macro hedge. Gold outperforms in stagflation regimes, dollar debasement cycles, and geopolitical stress — all three are live simultaneously. Watching real yields and DXY for position sizing triggers."</p>
+    </div>
+
+    <!-- Copper -->
+    <div class="pos-card watch rev card-commodity">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" id="logo-XCUUSD" src="" style="display:none;" onerror="this.style.display='none'"><span class="pos-name-lbl">Copper <span class="pos-name-ticker">(XCU/USD)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-XCUUSD" class="pos-price" style="color:#CD853F;">—</div>
+        <span id="chg-XCUUSD" class="pos-chg" style="color:#CD853F;">—</span>
+      </div>
+      <p class="pos-thesis">"The electrification metal. AI data centers, EV charging infrastructure, and grid modernization are structural demand floors. Watching China PMI and US infrastructure spend for the cycle entry point."</p>
+    </div>
+
+    <!-- Palladium -->
+    <div class="pos-card watch rev card-commodity">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" id="logo-XPDUSD" src="" style="display:none;" onerror="this.style.display='none'"><span class="pos-name-lbl">Palladium <span class="pos-name-ticker">(XPD/USD)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-XPDUSD" class="pos-price" style="color:#CD853F;">—</div>
+        <span id="chg-XPDUSD" class="pos-chg" style="color:#CD853F;">—</span>
+      </div>
+      <p class="pos-thesis">"Platinum-group metal with supply concentrated in Russia and South Africa — a direct geopolitical risk asset. Autocatalyst demand is the floor, green hydrogen optionality is the upside. Watching supply disruption signals."</p>
     </div>
 
   </div>
