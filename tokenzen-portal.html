@@ -2311,10 +2311,19 @@ window.addEventListener('scroll', () => {
     PUMP : 'pump-fun',
   };
 
-  const EQUITIES = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY',
-                    'AAPL','AMD','ASTS','AVGO','BE','CLSK','CRWV','CVX','DDOG',
-                    'BLSH','IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMNEY',
-                    'GLD','PALL','CPER'];
+  // Wave 1 — open positions: fetch immediately on load
+  const EQUITIES_POSITIONS = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY'];
+
+  // Wave 2 — watchlist + commodity ETFs: fetch 400ms after positions
+  // Splitting avoids hitting Finnhub free-tier rate limit (30 req/s) with 35 simultaneous calls
+  const EQUITIES_WATCHLIST = [
+    'AAPL','AMD','ASTS','AVGO','BE','CLSK','CRWV','CVX','DDOG',
+    'BLSH','IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMNEY',
+    'GLD','PALL','CPER'
+  ];
+
+  // Combined array used for WS subscriptions
+  const EQUITIES = [...EQUITIES_POSITIONS, ...EQUITIES_WATCHLIST];
 
   // ETF → commodity card mapping with scale factors
   // GLD:  1 share = 0.09637 oz gold     → spot = price × 10.377
@@ -2520,10 +2529,14 @@ window.addEventListener('scroll', () => {
   }
 
   async function fetchAllEquitiesREST() {
-    // Fire all equity requests in parallel — Finnhub free tier allows 30 req/s.
-    // Sequential 150ms gaps caused ~5s lag before watchlist cards populated.
-    await Promise.all(EQUITIES.map(sym => fetchFinnhubREST(sym)));
+    // Wave 1: open positions — fire immediately, paint fast
+    await Promise.all(EQUITIES_POSITIONS.map(sym => fetchFinnhubREST(sym)));
     stampTime();
+    // Wave 2: watchlist — 400ms later, avoids Finnhub 30 req/s rate limit
+    setTimeout(async () => {
+      await Promise.all(EQUITIES_WATCHLIST.map(sym => fetchFinnhubREST(sym)));
+      stampTime();
+    }, 400);
   }
 
   // ─── EQUITIES: FINNHUB WEBSOCKET ─────────────────────────────
