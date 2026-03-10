@@ -2602,6 +2602,18 @@ window.addEventListener('scroll', () => {
         for (const trade of msg.data) {
           if (!EQUITIES.includes(trade.s)) continue;
           updateCard(trade.s, trade.p, dayChangePct[trade.s], true);
+
+          // If this tick is a commodity ETF, push scaled price to the commodity card too
+          const comm = COMMODITY_ETF_MAP[trade.s];
+          if (comm) {
+            const spotPrice = trade.p * comm.scale;
+            const up = spotPrice >= (parseFloat(document.getElementById('price-' + comm.ticker)?.textContent?.replace(/[$,]/g, '')) || spotPrice);
+            const pEl = document.getElementById('price-' + comm.ticker);
+            if (pEl) {
+              pEl.textContent = '$' + spotPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+              pEl.style.color = up ? '#CD853F' : '#b05a20';
+            }
+          }
         }
         stampTime();
       } catch(err) {}
