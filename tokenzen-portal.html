@@ -355,10 +355,65 @@
     .pos-card.short::before { background: linear-gradient(90deg, var(--red), transparent); }
     .pos-card.watch::before { background: linear-gradient(90deg, var(--purple-bright), transparent); }
 
+    /* ── PER-SECTION COLOR SYSTEM ── */
+
+    /* Digital Assets — Teal */
+    .pos-card.card-crypto {
+      border-color: rgba(0,212,200,0.14);
+      background: linear-gradient(160deg, rgba(0,212,200,0.035) 0%, var(--bg-2) 60%);
+    }
+    .pos-card.card-crypto::before {
+      background: linear-gradient(90deg, var(--teal), transparent);
+    }
+    .pos-card.card-crypto:hover {
+      border-color: rgba(0,212,200,0.45);
+      background: linear-gradient(160deg, rgba(0,212,200,0.07) 0%, var(--bg-3) 60%);
+    }
+    .card-crypto .b-long {
+      background: rgba(0,212,200,0.08);
+      color: var(--teal);
+      border: 1px solid rgba(0,212,200,0.28);
+    }
+
+    /* Equities — Purple */
+    .pos-card.card-eq {
+      border-color: rgba(155,126,200,0.14);
+      background: linear-gradient(160deg, rgba(155,126,200,0.035) 0%, var(--bg-2) 60%);
+    }
+    .pos-card.card-eq::before {
+      background: linear-gradient(90deg, var(--purple-bright), transparent);
+    }
+    .pos-card.card-eq:hover {
+      border-color: rgba(155,126,200,0.45);
+      background: linear-gradient(160deg, rgba(155,126,200,0.07) 0%, var(--bg-3) 60%);
+    }
+    .card-eq .b-long {
+      background: rgba(155,126,200,0.08);
+      color: var(--purple-bright);
+      border: 1px solid rgba(155,126,200,0.28);
+    }
+
+    /* Watchlist — Amber */
+    .pos-card.card-watch {
+      border-color: rgba(255,170,0,0.14);
+      background: linear-gradient(160deg, rgba(255,170,0,0.03) 0%, var(--bg-2) 60%);
+    }
+    .pos-card.card-watch::before {
+      background: linear-gradient(90deg, #FFAA00, transparent);
+    }
+    .pos-card.card-watch:hover {
+      border-color: rgba(255,170,0,0.45);
+      background: linear-gradient(160deg, rgba(255,170,0,0.06) 0%, var(--bg-3) 60%);
+    }
+    .card-watch .b-watch {
+      background: rgba(255,170,0,0.08);
+      color: #FFAA00;
+      border: 1px solid rgba(255,170,0,0.28);
+    }
+
     .pos-card:hover {
-      background: var(--bg-3);
-      border-color: var(--teal-mid);
       transform: translateY(-3px);
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
     }
 
     .pos-card-head {
@@ -1033,7 +1088,7 @@
   </div>
   <div class="pos-grid pos-grid-crypto">
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-BTC" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">Bitcoin <span class="pos-name-ticker">(BTC)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1049,7 +1104,7 @@
       <p class="pos-thesis">"The foundational asset. US Strategic Bitcoin Reserve is a structural bid that didn't exist in any prior cycle. KOSPI rotation thesis live — $13.7B in EM outflows finding a new home. Weekly close above $83,737 = confirmed reversal."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-ETH" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">Ethereum <span class="pos-name-ticker">(ETH)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1065,7 +1120,7 @@
       <p class="pos-thesis">"Dominant DeFi + stablecoin settlement + L2 ecosystem. Glamsterdam and Hegota upgrades on the 2026 roadmap. ETF net redemptions have created a structural discount. The gap between where ETH trades and where it belongs is the thesis."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-XRP" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">XRP <span class="pos-name-ticker">(XRP)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1081,7 +1136,7 @@
       <p class="pos-thesis">"Regulatory clarity post-SEC settlement has unlocked institutional interest. Cross-border settlement use case is real and undervalued. Conviction at medium — needs Clarity Act progress and sustained ETF inflow confirmation to upgrade."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-SOL" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">Solana <span class="pos-name-ticker">(SOL)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1097,7 +1152,7 @@
       <p class="pos-thesis">"Alpenglow consensus upgrade (Anza) delivers 100–150ms finality via Votor + Rotor. Dominant DEX volume and developer activity intact through the correction. Bought fear, holding for the cycle."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-HYPE" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">Hyperliquid <span class="pos-name-ticker">(HYPE)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1113,7 +1168,7 @@
       <p class="pos-thesis">"On-chain perpetuals done right. Hyperliquid has proven product-market fit at scale — volume that would rank it among the top CEXs. Fully on-chain, no VC extraction, community-first distribution. This is what DeFi infra is supposed to look like."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-SUI" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">Sui <span class="pos-name-ticker">(SUI)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1129,7 +1184,7 @@
       <p class="pos-thesis">"Breakout L1 of the 2025-2026 cycle. Move language gives security + parallel processing advantages legacy chains can't match. TVL stayed stable even during the February crash — a sign of loyal developer commitment, not retail speculation."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-PUMP" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">Pump.fun <span class="pos-name-ticker">(PUMP)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1145,7 +1200,7 @@
       <p class="pos-thesis">"The Solana-native launchpad that turned memecoin creation into a protocol. Revenue sharing with token holders (~$39M distributed) creates a direct link between platform activity and token value. As Solana activity recovers, PUMP is the highest-beta play on the ecosystem's cultural layer."</p>
     </div>
 
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-PENGU" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">Pudgy Penguins <span class="pos-name-ticker">(PENGU)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1170,7 +1225,7 @@
   </div>
   <div class="pos-grid pos-grid-eq">
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-NVDA" src="https://logo.clearbit.com/nvidia.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Nvidia <span class="pos-name-ticker">(NVDA)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1186,7 +1241,7 @@
       <p class="pos-thesis">"The picks-and-shovels of the AI build-out. Every AI model that gets trained and every inference that gets run needs CUDA and H-series hardware. Blackwell architecture extends the moat. 6G and photonics investments show the roadmap extends well beyond current cycle."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-GOOGL" src="https://logo.clearbit.com/google.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Alphabet <span class="pos-name-ticker">(GOOGL)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1202,7 +1257,7 @@
       <p class="pos-thesis">"Gemini + Google Cloud + Search = the most distribution-advantaged AI player in the world. The market has consistently underestimated Google's ability to absorb AI disruption into its existing moats. Cloud upside is structurally underpriced."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-AMZN" src="https://logo.clearbit.com/amazon.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Amazon <span class="pos-name-ticker">(AMZN)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1218,7 +1273,7 @@
       <p class="pos-thesis">"AWS is the silent engine of the AI era — every startup, every model, every inference layer runs on it. Advertising + Prime are compounding cash machines funding the AI infrastructure build. Undervalued relative to its infrastructure dominance."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-META" src="https://logo.clearbit.com/meta.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Meta <span class="pos-name-ticker">(META)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1234,7 +1289,7 @@
       <p class="pos-thesis">"3 billion daily active users is the most valuable AI training dataset on earth. Llama as open-source strategy is a masterstroke — builds ecosystem dominance while commoditizing competitors. AR/VR optionality through Ray-Ban + Orion is underpriced."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-TSLA" src="https://logo.clearbit.com/tesla.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Tesla <span class="pos-name-ticker">(TSLA)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1250,7 +1305,7 @@
       <p class="pos-thesis">"Not a car company. An energy, AI, and robotics platform. Optimus robot at scale is the optionality the market hasn't priced. FSD progress turns every vehicle into a data collection node. The thesis is autonomy, not EVs."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-PLTR" src="https://logo.clearbit.com/palantir.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Palantir <span class="pos-name-ticker">(PLTR)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1266,7 +1321,7 @@
       <p class="pos-thesis">"The operating system for Western institutional AI. AIP is a moat that compounds with every enterprise and government deployment. Defense contracts + commercial AIP expansion = dual-engine growth in a period where geopolitical spending is accelerating."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-HOOD" src="https://logo.clearbit.com/robinhood.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Robinhood <span class="pos-name-ticker">(HOOD)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1282,7 +1337,7 @@
       <p class="pos-thesis">"Crypto + equities + options + prediction markets on one platform for a generation that doesn't use banks. The play is the full financial services stack for the digitally native. Crypto bull market is a direct revenue accelerant."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-COIN" src="https://logo.clearbit.com/coinbase.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Coinbase <span class="pos-name-ticker">(COIN)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1298,7 +1353,7 @@
       <p class="pos-thesis">"Custodian for 80%+ of US spot crypto ETF assets. FY25 revenue $7.18B. $11.3B liquidity position. The transition from high-fee broker to low-fee, high-volume financial infrastructure is structurally undervalued. Base network adds a long-duration L2 option."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-RKLB" src="https://logo.clearbit.com/rocketlabusa.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Rocket Lab <span class="pos-name-ticker">(RKLB)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1314,7 +1369,7 @@
       <p class="pos-thesis">"The only credible small-launch competitor to SpaceX with a vertically integrated model. Electron has a consistent launch cadence. Neutron is the medium-lift catalyst. Defense contracts + commercial satellite demand = a durable revenue floor."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-CRCL" src="https://logo.clearbit.com/circle.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Circle <span class="pos-name-ticker">(CRCL)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1330,7 +1385,7 @@
       <p class="pos-thesis">"Not a stablecoin company. A payment rail company. USDC + x402 protocol = the default AI agent-to-agent settlement layer. GENIUS Act is the regulatory catalyst. Trading 64% off its all-time high of $299 — this is a structural discount on the most important stablecoin infrastructure play in the market."</p>
     </div>
 
-    <div class="pos-card long rev">
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-GLXY" src="https://logo.clearbit.com/galaxydigital.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Galaxy Digital <span class="pos-name-ticker">(GLXY)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1356,7 +1411,7 @@
   <div class="pos-grid pos-grid-watch">
 
     <!-- Apple -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-AAPL" src="https://logo.clearbit.com/apple.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Apple <span class="pos-name-ticker">(AAPL)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1369,7 +1424,7 @@
     </div>
 
     <!-- AMD -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-AMD" src="https://logo.clearbit.com/amd.com" onerror="this.style.display='none'"><span class="pos-name-lbl">AMD <span class="pos-name-ticker">(AMD)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1382,7 +1437,7 @@
     </div>
 
     <!-- AST SpaceMobile -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-ASTS" src="https://logo.clearbit.com/ast-science.com" onerror="this.style.display='none'"><span class="pos-name-lbl">AST SpaceMobile <span class="pos-name-ticker">(ASTS)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1395,7 +1450,7 @@
     </div>
 
     <!-- Broadcom -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-AVGO" src="https://logo.clearbit.com/broadcom.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Broadcom <span class="pos-name-ticker">(AVGO)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1408,7 +1463,7 @@
     </div>
 
     <!-- Bloom Energy -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-BE" src="https://logo.clearbit.com/bloomenergy.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Bloom Energy <span class="pos-name-ticker">(BE)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1421,7 +1476,7 @@
     </div>
 
     <!-- Bullish -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-BULLISH" src="https://logo.clearbit.com/bullish.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Bullish <span class="pos-name-ticker">(PRIVATE)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1433,7 +1488,7 @@
     </div>
 
     <!-- CleanSpark -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-CLSK" src="https://logo.clearbit.com/cleanspark.com" onerror="this.style.display='none'"><span class="pos-name-lbl">CleanSpark <span class="pos-name-ticker">(CLSK)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1446,7 +1501,7 @@
     </div>
 
     <!-- CoreWeave -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-CRWV" src="https://logo.clearbit.com/coreweave.com" onerror="this.style.display='none'"><span class="pos-name-lbl">CoreWeave <span class="pos-name-ticker">(CRWV)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1459,7 +1514,7 @@
     </div>
 
     <!-- Chevron -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-CVX" src="https://logo.clearbit.com/chevron.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Chevron <span class="pos-name-ticker">(CVX)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1472,7 +1527,7 @@
     </div>
 
     <!-- Datadog -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-DDOG" src="https://logo.clearbit.com/datadoghq.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Datadog <span class="pos-name-ticker">(DDOG)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1485,7 +1540,7 @@
     </div>
 
     <!-- IonQ -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-IONQ" src="https://logo.clearbit.com/ionq.com" onerror="this.style.display='none'"><span class="pos-name-lbl">IonQ <span class="pos-name-ticker">(IONQ)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1498,7 +1553,7 @@
     </div>
 
     <!-- IREN -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-IREN" src="https://logo.clearbit.com/iren.com" onerror="this.style.display='none'"><span class="pos-name-lbl">IREN <span class="pos-name-ticker">(IREN)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1511,7 +1566,7 @@
     </div>
 
     <!-- Microsoft -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-MSFT" src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Microsoft <span class="pos-name-ticker">(MSFT)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1524,7 +1579,7 @@
     </div>
 
     <!-- Nu Holdings -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-NU" src="https://logo.clearbit.com/nubank.com.br" onerror="this.style.display='none'"><span class="pos-name-lbl">Nu Holdings <span class="pos-name-ticker">(NU)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1537,7 +1592,7 @@
     </div>
 
     <!-- Netflix -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-NFLX" src="https://logo.clearbit.com/netflix.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Netflix <span class="pos-name-ticker">(NFLX)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1550,7 +1605,7 @@
     </div>
 
     <!-- D-Wave Quantum -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-QBTS" src="https://logo.clearbit.com/dwavesys.com" onerror="this.style.display='none'"><span class="pos-name-lbl">D-Wave Quantum <span class="pos-name-ticker">(QBTS)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1563,7 +1618,7 @@
     </div>
 
     <!-- Defiance Quantum ETF -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-QTUM" src="https://logo.clearbit.com/defianceetfs.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Defiance Quantum ETF <span class="pos-name-ticker">(QTUM)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1576,7 +1631,7 @@
     </div>
 
     <!-- Rigetti -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-RGTI" src="https://logo.clearbit.com/rigetti.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Rigetti Computing <span class="pos-name-ticker">(RGTI)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1589,7 +1644,7 @@
     </div>
 
     <!-- SoFi -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-SOFI" src="https://logo.clearbit.com/sofi.com" onerror="this.style.display='none'"><span class="pos-name-lbl">SoFi Technologies <span class="pos-name-ticker">(SOFI)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1602,7 +1657,7 @@
     </div>
 
     <!-- Siemens -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-SIEGY" src="https://logo.clearbit.com/siemens.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Siemens AG <span class="pos-name-ticker">(SIEGY)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1615,7 +1670,7 @@
     </div>
 
     <!-- Schneider Electric -->
-    <div class="pos-card watch rev">
+    <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-SMEGF" src="https://logo.clearbit.com/se.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Schneider Electric <span class="pos-name-ticker">(SMEGF)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
