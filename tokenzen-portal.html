@@ -2558,57 +2558,73 @@ window.addEventListener('scroll', () => {
     }
   }
 
-  // ─── COMMODITIES: STOOQ.COM SPOT/FUTURES PRICES ─────────────
-  // Stooq is CORS-open from browsers — no API key, no cookies.
-  // Returns CSV: Symbol,Date,Time,Open,High,Low,Close,Volume
-  // Close = current price. We track prevClose in memory for 24h %.
-  //
-  //   xauusd  → Gold spot      ($/troy oz)   ~$5,100
-  //   hg.f    → Copper futures ($/lb)        ~$5.90
-  //   pausd   → Palladium spot ($/troy oz)   ~$1,700
+  // ─── COMMODITIES: MULTI-SOURCE PRICE ORACLE ─────────────────
+  // Source 1 (primary): corsproxy.io → Yahoo Finance futures
+  //   GC=F  = Gold     $/troy oz  ~$5,100
+  //   HG=F  = Copper   $/lb       ~$5.90
+  //   PA=F  = Palladium $/troy oz ~$1,700
+  // Source 2 (fallback): Finnhub ETF quotes × exact oz/share ratio
+  //   GLD  × 10.377 = Gold spot
+  //   CPER × 0.219  = Copper $/lb  (empirical, recal if Cu moves >10%)
+  //   PALL × 10.344 = Palladium spot
   const METALS_INTERVAL = 60000;
 
   const COMMODITY_FUTURES = [
-    { stooq: 'xauusd', ticker: 'XAUUSD', name: 'Gold'      },
-    { stooq: 'hg.f',   ticker: 'XCUUSD', name: 'Copper'    },
-    { stooq: 'pausd',  ticker: 'XPDUSD', name: 'Palladium' },
+    { yahoo: 'GC%3DF', etf: 'GLD',  etfScale: 10.377, ticker: 'XAUUSD', name: 'Gold'      },
+    { yahoo: 'HG%3DF', etf: 'CPER', etfScale: 0.219,  ticker: 'XCUUSD', name: 'Copper'    },
+    { yahoo: 'PA%3DF', etf: 'PALL', etfScale: 10.344, ticker: 'XPDUSD', name: 'Palladium' },
   ];
 
-  // Track previous prices for 24h change calc (Stooq doesn't return prevClose)
-  const commodityPrev = {};
+  function updateCommodityCard(ticker, price, prev) {
+    const pEl = document.getElementById('price-' + ticker);
+    const cEl = document.getElementById('chg-'   + ticker);
+    if (!pEl || !price || isNaN(price)) return false;
 
-  async function fetchOneCommodity({ stooq, ticker, name }) {
+    const up  = prev == null ? true : price >= prev;
+    const chg = prev ? ((price - prev) / prev) * 100 : null;
+
+    pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    pEl.style.color = up ? '#CD853F' : '#b05a20';
+    if (cEl) {
+      cEl.textContent = chg != null ? (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%' : '—';
+      cEl.style.color = up ? '#CD853F' : '#b05a20';
+    }
+    return true;
+  }
+
+  async function fetchOneCommodity({ yahoo, etf, etfScale, ticker, name }) {
+    // ── Source 1: corsproxy.io → Yahoo Finance actual futures price ──
     try {
-      const url = 'https://stooq.com/q/l/?s=' + stooq + '&f=sd2t2ohlcv&h&e=csv';
-      const r = await fetch(url);
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      const text = await r.text();
+      const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(
+        'https://query1.finance.yahoo.com/v8/finance/chart/' + yahoo + '?interval=1d&range=2d'
+      );
+      const r = await fetch(proxyUrl);
+      if (!r.ok) throw new Error('proxy HTTP ' + r.status);
+      const d = await r.json();
+      const meta  = d?.chart?.result?.[0]?.meta;
+      const price = meta?.regularMarketPrice;
+      const prev  = meta?.chartPreviousClose ?? meta?.previousClose;
+      if (!price) throw new Error('no price in response');
+      console.log('[TZ] ' + name + ' via Yahoo: $' + price);
+      updateCommodityCard(ticker, price, prev);
+      return;
+    } catch (e1) {
+      console.warn('[TZ] ' + name + ' Yahoo failed:', e1.message, '— trying Finnhub ETF fallback');
+    }
 
-      // Parse CSV — skip header line, grab Close (col 6, 0-indexed)
-      const lines = text.trim().split('\n');
-      if (lines.length < 2) throw new Error('no data rows');
-      const cols  = lines[1].split(',');
-      const price = parseFloat(cols[6]); // Close
-      if (!price || isNaN(price)) throw new Error('bad price: ' + cols[6]);
-
-      const prev = commodityPrev[ticker];
-      const up   = prev == null ? true : price >= prev;
-      const chg  = prev ? ((price - prev) / prev) * 100 : 0;
-      commodityPrev[ticker] = price;
-
-      const pEl = document.getElementById('price-' + ticker);
-      const cEl = document.getElementById('chg-'   + ticker);
-      if (!pEl) return;
-
-      pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      pEl.style.color = up ? '#CD853F' : '#b05a20';
-
-      if (cEl) {
-        cEl.textContent = prev ? (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%' : '—';
-        cEl.style.color = up ? '#CD853F' : '#b05a20';
-      }
-    } catch (e) {
-      console.warn('[TZ] Commodity fetch failed (' + name + '):', e.message);
+    // ── Source 2: Finnhub ETF quote × scale factor ───────────────────
+    try {
+      const r = await fetch('https://finnhub.io/api/v1/quote?symbol=' + etf + '&token=' + FINNHUB_KEY);
+      if (!r.ok) throw new Error('finnhub HTTP ' + r.status);
+      const d = await r.json();
+      if (!d?.c || d.c === 0) throw new Error('zero/null price from Finnhub for ' + etf);
+      const price = d.c  * etfScale;
+      const prev  = d.pc ? d.pc * etfScale : null;
+      console.log('[TZ] ' + name + ' via Finnhub ETF (' + etf + ' × ' + etfScale + '): $' + price.toFixed(2));
+      updateCommodityCard(ticker, price, prev);
+      return;
+    } catch (e2) {
+      console.error('[TZ] ' + name + ' ALL sources failed. Finnhub error:', e2.message);
     }
   }
 
