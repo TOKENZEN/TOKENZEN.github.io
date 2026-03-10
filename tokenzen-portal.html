@@ -2558,59 +2558,58 @@ window.addEventListener('scroll', () => {
     }
   }
 
-  // ─── COMMODITIES: YAHOO FINANCE FUTURES ──────────────────────
-  // Fetches actual futures prices — no ETF scaling, no unit conversion issues.
-  //   GC=F  → Gold futures     ($/troy oz)   ~$5,100
-  //   HG=F  → Copper futures   ($/lb)        ~$5.90
-  //   PA=F  → Palladium futures ($/troy oz)  ~$1,700
+  // ─── COMMODITIES: STOOQ.COM SPOT/FUTURES PRICES ─────────────
+  // Stooq is CORS-open from browsers — no API key, no cookies.
+  // Returns CSV: Symbol,Date,Time,Open,High,Low,Close,Volume
+  // Close = current price. We track prevClose in memory for 24h %.
   //
-  // Yahoo Finance v8 chart API is CORS-open from browsers (no key, no cookies needed).
-  // query1 and query2 are load-balanced — both work. Refreshes every 60s.
+  //   xauusd  → Gold spot      ($/troy oz)   ~$5,100
+  //   hg.f    → Copper futures ($/lb)        ~$5.90
+  //   pausd   → Palladium spot ($/troy oz)   ~$1,700
   const METALS_INTERVAL = 60000;
 
   const COMMODITY_FUTURES = [
-    { symbol: 'GC%3DF', ticker: 'XAUUSD', name: 'Gold'      },
-    { symbol: 'HG%3DF', ticker: 'XCUUSD', name: 'Copper'    },
-    { symbol: 'PA%3DF', ticker: 'XPDUSD', name: 'Palladium' },
+    { stooq: 'xauusd', ticker: 'XAUUSD', name: 'Gold'      },
+    { stooq: 'hg.f',   ticker: 'XCUUSD', name: 'Copper'    },
+    { stooq: 'pausd',  ticker: 'XPDUSD', name: 'Palladium' },
   ];
 
-  async function fetchOneCommodity({ symbol, ticker, name }) {
-    // Try query1, fall back to query2 if blocked
-    const hosts = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
-    let lastErr;
-    for (const host of hosts) {
-      try {
-        const url = 'https://' + host + '/v8/finance/chart/' + symbol + '?interval=1d&range=2d&includePrePost=false';
-        const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        const d = await r.json();
-        const result = d?.chart?.result?.[0];
-        if (!result) throw new Error('no result');
-        const meta  = result.meta;
-        const price = meta.regularMarketPrice;
-        const prev  = meta.chartPreviousClose ?? meta.previousClose ?? meta.regularMarketPreviousClose;
-        if (!price) throw new Error('no price');
+  // Track previous prices for 24h change calc (Stooq doesn't return prevClose)
+  const commodityPrev = {};
 
-        const up  = prev == null ? true : price >= prev;
-        const chg = prev ? ((price - prev) / prev) * 100 : 0;
+  async function fetchOneCommodity({ stooq, ticker, name }) {
+    try {
+      const url = 'https://stooq.com/q/l/?s=' + stooq + '&f=sd2t2ohlcv&h&e=csv';
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const text = await r.text();
 
-        const pEl = document.getElementById('price-' + ticker);
-        const cEl = document.getElementById('chg-'   + ticker);
-        if (!pEl) return;
+      // Parse CSV — skip header line, grab Close (col 6, 0-indexed)
+      const lines = text.trim().split('\n');
+      if (lines.length < 2) throw new Error('no data rows');
+      const cols  = lines[1].split(',');
+      const price = parseFloat(cols[6]); // Close
+      if (!price || isNaN(price)) throw new Error('bad price: ' + cols[6]);
 
-        pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        pEl.style.color = up ? '#CD853F' : '#b05a20';
+      const prev = commodityPrev[ticker];
+      const up   = prev == null ? true : price >= prev;
+      const chg  = prev ? ((price - prev) / prev) * 100 : 0;
+      commodityPrev[ticker] = price;
 
-        if (cEl) {
-          cEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
-          cEl.style.color = up ? '#CD853F' : '#b05a20';
-        }
-        return; // success — stop trying hosts
-      } catch (e) {
-        lastErr = e;
+      const pEl = document.getElementById('price-' + ticker);
+      const cEl = document.getElementById('chg-'   + ticker);
+      if (!pEl) return;
+
+      pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      pEl.style.color = up ? '#CD853F' : '#b05a20';
+
+      if (cEl) {
+        cEl.textContent = prev ? (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%' : '—';
+        cEl.style.color = up ? '#CD853F' : '#b05a20';
       }
+    } catch (e) {
+      console.warn('[TZ] Commodity fetch failed (' + name + '):', e.message);
     }
-    console.warn('[TZ] Commodity fetch failed (' + name + '):', lastErr?.message);
   }
 
   async function fetchMetals() {
