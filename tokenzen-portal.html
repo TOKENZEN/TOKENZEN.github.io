@@ -2510,10 +2510,6 @@ window.addEventListener('scroll', () => {
       EQUITIES.forEach(sym => {
         finnhubWS.send(JSON.stringify({ type: 'subscribe', symbol: sym }));
       });
-      // Subscribe commodity ETFs for live ticks too
-      ['GLD','PALL','CPER'].forEach(sym => {
-        finnhubWS.send(JSON.stringify({ type: 'subscribe', symbol: sym }));
-      });
       setStatus('⬤ Streaming live', '#00ff88');
     };
 
@@ -2522,19 +2518,8 @@ window.addEventListener('scroll', () => {
         const msg = JSON.parse(e.data);
         if (msg.type !== 'trade' || !msg.data) return;
         for (const trade of msg.data) {
-          if (EQUITIES.includes(trade.s)) {
-            updateCard(trade.s, trade.p, dayChangePct[trade.s], true);
-          } else {
-            // Live commodity ETF tick — find matching commodity and scale
-            const comm = COMMODITY_ETF.find(c => c.etf === trade.s);
-            if (!comm) continue;
-            const price = trade.p * comm.scale;
-            const pEl = document.getElementById('price-' + comm.ticker);
-            if (pEl) {
-              pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-              pEl.style.color = '#CD853F';
-            }
-          }
+          if (!EQUITIES.includes(trade.s)) continue;
+          updateCard(trade.s, trade.p, dayChangePct[trade.s], true);
         }
         stampTime();
       } catch(err) {}
@@ -2573,66 +2558,63 @@ window.addEventListener('scroll', () => {
     }
   }
 
-  // ─── COMMODITIES: FINNHUB ETF SPOT MATH ──────────────────────────
-  // OANDA forex symbols are unreliable on Finnhub free tier — dropped.
-  // Instead: fetch ETF prices via the same Finnhub equity feed, then
-  // back-calculate spot using each ETF's known oz-per-share ratio.
+  // ─── COMMODITIES: YAHOO FINANCE FUTURES ──────────────────────
+  // Fetches actual futures prices — no ETF scaling, no unit conversion issues.
+  //   GC=F  → Gold futures     ($/troy oz)   ~$5,100
+  //   HG=F  → Copper futures   ($/lb)        ~$5.90
+  //   PA=F  → Palladium futures ($/troy oz)  ~$1,700
   //
-  // GLD  (SPDR Gold Trust)          — 0.09637 oz gold/share    → spot = price × 10.376
-  // PALL (abrdn Physical Palladium) — 0.09667 oz palladium/share → spot = price × 10.345
-  // CPER (US Copper Index ETF)      — futures-based; empirical factor 0.219 $/lb per $1 NAV
-  //   Copper is quoted in $/lb in the US market (not $/oz).
-  //   CPER ≈ $26.9 when copper ≈ $5.90/lb → factor = 5.90 / 26.9 ≈ 0.219
-  //
-  // GLD/PALL scale factors are exact and stable (oz/share only drifts ~0.005%/yr
-  // due to expense ratio). CPER factor recalibrated when copper moves >10%.
+  // Yahoo Finance v8 chart API is CORS-open from browsers (no key, no cookies needed).
+  // query1 and query2 are load-balanced — both work. Refreshes every 60s.
   const METALS_INTERVAL = 60000;
 
-  // Precomputed scale factors — apply as: spot_price = ETF_price × scale
-  // GLD:  spot = GLD  × 10.376  (= 1 / 0.09637 oz/share)  → gold $/troy oz
-  // PALL: spot = PALL × 10.345  (= 1 / 0.09667 oz/share)  → palladium $/troy oz
-  // CPER: spot = CPER × 0.219   (empirical $/lb per $1 NAV) → copper $/lb
-  //   Note: GLD/PALL use INVERSE (share holds fraction of oz → multiply to get full oz price)
-  //         CPER uses DIRECT factor (futures NAV → $/lb via regression at current levels)
-  const COMMODITY_ETF = [
-    { etf: 'GLD',  scale: 10.376, ticker: 'XAUUSD', name: 'Gold'      },
-    { etf: 'PALL', scale: 10.345, ticker: 'XPDUSD', name: 'Palladium' },
-    { etf: 'CPER', scale: 0.219,  ticker: 'XCUUSD', name: 'Copper'    },
+  const COMMODITY_FUTURES = [
+    { symbol: 'GC%3DF', ticker: 'XAUUSD', name: 'Gold'      },
+    { symbol: 'HG%3DF', ticker: 'XCUUSD', name: 'Copper'    },
+    { symbol: 'PA%3DF', ticker: 'XPDUSD', name: 'Palladium' },
   ];
 
-  async function fetchOneCommodity({ etf, scale, ticker, name }) {
-    try {
-      const r = await fetch(
-        'https://finnhub.io/api/v1/quote?symbol=' + etf + '&token=' + FINNHUB_KEY
-      );
-      if (!r.ok) throw new Error(r.status);
-      const d = await r.json();
-      if (!d || !d.c || d.c === 0) throw new Error('no price');
+  async function fetchOneCommodity({ symbol, ticker, name }) {
+    // Try query1, fall back to query2 if blocked
+    const hosts = ['query1.finance.yahoo.com', 'query2.finance.yahoo.com'];
+    let lastErr;
+    for (const host of hosts) {
+      try {
+        const url = 'https://' + host + '/v8/finance/chart/' + symbol + '?interval=1d&range=2d&includePrePost=false';
+        const r = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const d = await r.json();
+        const result = d?.chart?.result?.[0];
+        if (!result) throw new Error('no result');
+        const meta  = result.meta;
+        const price = meta.regularMarketPrice;
+        const prev  = meta.chartPreviousClose ?? meta.previousClose ?? meta.regularMarketPreviousClose;
+        if (!price) throw new Error('no price');
 
-      const price = d.c  * scale;
-      const prev  = d.pc * scale;
-      const up    = price >= prev;
-      const chg   = prev ? ((d.c - d.pc) / d.pc) * 100 : 0;
+        const up  = prev == null ? true : price >= prev;
+        const chg = prev ? ((price - prev) / prev) * 100 : 0;
 
-      const pEl = document.getElementById('price-' + ticker);
-      const cEl = document.getElementById('chg-'   + ticker);
-      if (!pEl) return;
+        const pEl = document.getElementById('price-' + ticker);
+        const cEl = document.getElementById('chg-'   + ticker);
+        if (!pEl) return;
 
-      pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      pEl.style.color = up ? '#CD853F' : '#b05a20';
+        pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        pEl.style.color = up ? '#CD853F' : '#b05a20';
 
-      if (cEl) {
-        cEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
-        cEl.style.color = up ? '#CD853F' : '#b05a20';
+        if (cEl) {
+          cEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+          cEl.style.color = up ? '#CD853F' : '#b05a20';
+        }
+        return; // success — stop trying hosts
+      } catch (e) {
+        lastErr = e;
       }
-    } catch (e) {
-      console.warn('[TZ] Commodity fetch failed (' + name + '):', e.message);
     }
+    console.warn('[TZ] Commodity fetch failed (' + name + '):', lastErr?.message);
   }
 
   async function fetchMetals() {
-    // Fire all three commodity requests in parallel — no rate limit issue at 3 req
-    await Promise.all(COMMODITY_ETF.map(c => fetchOneCommodity(c)));
+    await Promise.all(COMMODITY_FUTURES.map(c => fetchOneCommodity(c)));
     stampTime();
   }
 
