@@ -575,130 +575,16 @@
       border: 1px solid rgba(255,75,138,0.22);
     }
 
-    /* ── SECTION HEADER (tabbed + collapsible) ── */
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 24px;
-      padding-bottom: 32px;
-      flex-wrap: wrap;
-    }
-    .section-header-left { flex: 1; }
-    .section-header-right {
+    .pos-block-label {
       display: flex;
       align-items: center;
       gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    /* Tab bar */
-    .tab-bar {
-      display: flex;
-      gap: 2px;
-      background: var(--bg-1);
-      border: 1px solid var(--border-0);
-      padding: 3px;
-    }
-    .tab-btn {
-      font-family: 'Orbitron', monospace;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      padding: 7px 16px;
-      border: none;
-      background: transparent;
-      color: var(--text-2);
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      white-space: nowrap;
-    }
-    .tab-btn:hover { color: var(--text-1); background: var(--bg-2); }
-    .tab-btn.active { background: var(--bg-3); color: var(--text-0); }
-    #tabs-positions .tab-btn.active { color: var(--teal); box-shadow: inset 0 0 0 1px rgba(0,212,200,0.25); }
-    #tabs-watchlist .tab-btn.active { color: #FFAA00;     box-shadow: inset 0 0 0 1px rgba(255,170,0,0.25); }
-
-    /* Collapse button */
-    .collapse-btn {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      color: var(--text-2);
-      background: transparent;
-      border: 1px solid var(--border-0);
-      padding: 7px 14px;
-      cursor: pointer;
-      transition: color 0.2s, border-color 0.2s;
-    }
-    .collapse-btn:hover { color: var(--text-0); border-color: var(--text-2); }
-    .collapse-icon {
-      font-size: 9px;
-      transition: transform 0.35s ease;
-      display: inline-block;
-    }
-    .collapse-btn.collapsed .collapse-icon { transform: rotate(180deg); }
-    .collapse-btn.collapsed .collapse-label::after { content: 'EXPAND'; }
-    .collapse-btn:not(.collapsed) .collapse-label::after { content: 'COLLAPSE'; }
-    .collapse-label { display: none; }
-    .collapse-label::after { display: inline; }
-
-    /* Collapsible body */
-    .section-body {
-      overflow: hidden;
-      transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
-      max-height: 9999px;
-      opacity: 1;
-    }
-    .section-body.collapsed {
-      max-height: 0;
-      opacity: 0;
-    }
-
-    /* Unified grid */
-    .pos-grid-unified {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    /* Category group */
-    .cat-group { display: block; }
-    .cat-group.hidden { display: none; }
-
-    /* Category divider */
-    .cat-divider {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-top: 48px;
+      margin-top: 56px;
       margin-bottom: 20px;
     }
-    .cat-group:first-child .cat-divider { margin-top: 0; }
-    .cat-divider-tag {
-      font-family: 'Orbitron', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      padding: 6px 16px;
+    .pos-block-label:first-of-type {
+      margin-top: 0;
     }
-    .cat-divider-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      color: var(--text-3);
-    }
-
-    /* Inner card grid */
-    .cat-group .pos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2px;
-    }
-
-    /* Block color tags (reused on cat-divider-tag) */
     .block-tag {
       font-family: 'Orbitron', monospace;
       font-size: 11px;
@@ -720,6 +606,12 @@
       background: rgba(255,170,0,0.06);
       border: 1px solid rgba(255,170,0,0.25);
       color: #FFAA00;
+    }
+    .block-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--text-3);
     }
     .pos-grid-crypto { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
     .pos-grid-eq { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
@@ -1108,9 +1000,6 @@
       .pos-grid, .model-grid { grid-template-columns: 1fr; }
       .road-grid { grid-template-columns: 1fr 1fr; }
       .tz-stats { gap: 36px; }
-      .section-header { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .section-header-right { flex-direction: column; align-items: flex-start; gap: 10px; }
-      .tab-bar { flex-wrap: wrap; }
     }
   
     /* ── ASSET LOGOS ── */
@@ -1200,40 +1089,29 @@
 
 <!-- POSITIONS -->
 <section class="s" id="positions">
-    <!-- LIVE PRICE ORACLE BAR -->
+  <!-- LIVE PRICE ORACLE BAR -->
   <div style="display:flex;align-items:center;gap:10px;justify-content:flex-end;padding:0 0 18px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);">
     <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#00ff88;box-shadow:0 0 8px #00ff88;animation:pulse 2s infinite;"></span>
     <span style="color:#00ff88;letter-spacing:.1em;font-weight:600;">LIVE PRICES</span>
     <span style="opacity:.4;">·</span>
     <span id="price-timestamp" style="opacity:.55;">fetching...</span>
   </div>
-
-
-  <div class="section-header rev">
-    <div class="section-header-left">
+  <div class="s-head">
+    <div>
       <div class="s-eyebrow">Live Signals</div>
-      <h2 class="s-h2">OPEN<br>POSITIONS</h2>
+      <h2 class="s-h2">CURRENT<br>POSITIONS</h2>
     </div>
-    <div class="section-header-right">
-      <div class="tab-bar" id="tabs-positions">
-        <button class="tab-btn active" data-tab="all">ALL</button>
-        <button class="tab-btn" data-tab="crypto">DIGITAL ASSETS</button>
-        <button class="tab-btn" data-tab="equity">EQUITIES</button>
-      </div>
-      <button class="collapse-btn" data-target="body-positions">
-        <span class="collapse-icon">▲</span>
-        <span class="collapse-label">COLLAPSE</span>
-      </button>
-    </div>
+    <div class="s-num">01</div>
   </div>
 
-  <div class="section-body" id="body-positions">
-    <div class="pos-grid pos-grid-unified">
+  <!-- CRYPTO BLOCK -->
+  <div class="pos-block-label rev">
+    <span class="block-tag block-crypto">DIGITAL ASSETS</span>
+    <span class="block-count">8 positions</span>
+  </div>
+  <div class="pos-grid pos-grid-crypto">
 
-      <div class="cat-group" data-cat="crypto">
-        <div class="cat-divider"><span class="cat-divider-tag block-crypto">DIGITAL ASSETS</span><span class="cat-divider-count">8 positions</span></div>
-        <div class="pos-grid">
-        <div class="pos-card long rev card-crypto">
+    <div class="pos-card long rev card-crypto">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-BTC" src="" style="display:none" onerror="this.style.display='none'"><span class="pos-name-lbl">Bitcoin <span class="pos-name-ticker">(BTC)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1360,13 +1238,17 @@
       
       <p class="pos-thesis">"Negative CAC model — physical merchandise drives digital user acquisition at scale. 2M+ units sold into the $31.7B licensed toy market. One of the few NFT-native projects with real-world distribution and brand equity outside crypto."</p>
     </div>
-        </div>
-      </div>
 
-      <div class="cat-group" data-cat="equity">
-        <div class="cat-divider"><span class="cat-divider-tag block-eq">EQUITIES</span><span class="cat-divider-count">11 positions</span></div>
-        <div class="pos-grid">
-        <div class="pos-card long rev card-eq">
+  </div>
+
+  <!-- EQUITIES BLOCK -->
+  <div class="pos-block-label rev">
+    <span class="block-tag block-eq">EQUITIES</span>
+    <span class="block-count">11 positions</span>
+  </div>
+  <div class="pos-grid pos-grid-eq">
+
+    <div class="pos-card long rev card-eq">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-NVDA" src="https://logo.clearbit.com/nvidia.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Nvidia <span class="pos-name-ticker">(NVDA)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -1541,41 +1423,17 @@
       
       <p class="pos-thesis">"The Goldman Sachs of digital assets. Trading desk + asset management + investment banking for the crypto-native institution. Positioned at every layer of the institutional crypto stack. Structural beneficiary of every bull cycle and every new product launch in the space."</p>
     </div>
-        </div>
-      </div>
 
-    </div>
-  </div>
-</section>
-
-<!-- WATCHLIST -->
-<section class="s" id="watchlist">
-  <div class="section-header rev">
-    <div class="section-header-left">
-      <div class="s-eyebrow">Monitoring</div>
-      <h2 class="s-h2">WATCH<br>LIST</h2>
-    </div>
-    <div class="section-header-right">
-      <div class="tab-bar" id="tabs-watchlist">
-        <button class="tab-btn active" data-tab="all">ALL</button>
-        <button class="tab-btn" data-tab="equity">EQUITIES</button>
-        <button class="tab-btn" data-tab="commodity">COMMODITIES</button>
-      </div>
-      <button class="collapse-btn" data-target="body-watchlist">
-        <span class="collapse-icon">▲</span>
-        <span class="collapse-label">COLLAPSE</span>
-      </button>
-    </div>
   </div>
 
-  <div class="section-body" id="body-watchlist">
-    <div class="pos-grid pos-grid-unified">
+  <!-- WATCHLIST BLOCK -->
+  <div class="pos-block-label rev">
+    <span class="block-tag block-watch">WATCHLIST</span>
+    <span class="block-count">21 assets</span>
+  </div>
+  <div class="pos-grid pos-grid-watch">
 
-      <div class="cat-group" data-cat="equity">
-        <div class="cat-divider"><span class="cat-divider-tag block-watch">EQUITIES</span><span class="cat-divider-count">21 assets</span></div>
-        <div class="pos-grid">
-        <!-- Apple -->
-
+    <!-- Apple -->
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-AAPL" src="https://logo.clearbit.com/apple.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Apple <span class="pos-name-ticker">(AAPL)</span></span></div>
@@ -1589,7 +1447,6 @@
     </div>
 
     <!-- AMD -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-AMD" src="https://logo.clearbit.com/amd.com" onerror="this.style.display='none'"><span class="pos-name-lbl">AMD <span class="pos-name-ticker">(AMD)</span></span></div>
@@ -1603,7 +1460,6 @@
     </div>
 
     <!-- AST SpaceMobile -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-ASTS" src="https://logo.clearbit.com/ast-science.com" onerror="this.style.display='none'"><span class="pos-name-lbl">AST SpaceMobile <span class="pos-name-ticker">(ASTS)</span></span></div>
@@ -1617,7 +1473,6 @@
     </div>
 
     <!-- Broadcom -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-AVGO" src="https://logo.clearbit.com/broadcom.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Broadcom <span class="pos-name-ticker">(AVGO)</span></span></div>
@@ -1631,7 +1486,6 @@
     </div>
 
     <!-- Bloom Energy -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-BE" src="https://logo.clearbit.com/bloomenergy.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Bloom Energy <span class="pos-name-ticker">(BE)</span></span></div>
@@ -1645,21 +1499,18 @@
     </div>
 
     <!-- Bullish -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
-        <div class="pos-ticker-row"><img class="asset-logo" id="logo-BLSH" src="https://logo.clearbit.com/bullish.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Bullish <span class="pos-name-ticker">(BLSH)</span></span></div>
+        <div class="pos-ticker-row"><img class="asset-logo" id="logo-BULLISH" src="https://logo.clearbit.com/bullish.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Bullish <span class="pos-name-ticker">(PRIVATE)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
       </div>
       <div class="pos-price-row">
-        <div id="price-BLSH" class="pos-price clr-pu">—</div>
-        <span id="chg-BLSH" class="pos-chg clr-pu">—</span>
+        <div class="pos-price clr-pu" style="font-size:18px;letter-spacing:0.06em;line-height:1.6;">UNLISTED</div>
       </div>
-      <p class="pos-thesis">"First digital asset exchange listed on the NYSE (IPO Aug 2025). Owns CoinDesk, holds 24K BTC, operates regulated in US, EU, Hong Kong. Pure-play institutional CEX with real trading volume — $84B in Feb 2026 alone. The Goldman Sachs of crypto exchanges."</p>
+      <p class="pos-thesis">"Institutional-grade crypto exchange backed by Peter Thiel. Watching for public listing event as a potential pure-play CEX infrastructure bet with regulated credentials."</p>
     </div>
 
     <!-- CleanSpark -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-CLSK" src="https://logo.clearbit.com/cleanspark.com" onerror="this.style.display='none'"><span class="pos-name-lbl">CleanSpark <span class="pos-name-ticker">(CLSK)</span></span></div>
@@ -1673,7 +1524,6 @@
     </div>
 
     <!-- CoreWeave -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-CRWV" src="https://logo.clearbit.com/coreweave.com" onerror="this.style.display='none'"><span class="pos-name-lbl">CoreWeave <span class="pos-name-ticker">(CRWV)</span></span></div>
@@ -1687,7 +1537,6 @@
     </div>
 
     <!-- Chevron -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-CVX" src="https://logo.clearbit.com/chevron.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Chevron <span class="pos-name-ticker">(CVX)</span></span></div>
@@ -1701,7 +1550,6 @@
     </div>
 
     <!-- Datadog -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-DDOG" src="https://logo.clearbit.com/datadoghq.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Datadog <span class="pos-name-ticker">(DDOG)</span></span></div>
@@ -1715,7 +1563,6 @@
     </div>
 
     <!-- IonQ -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-IONQ" src="https://logo.clearbit.com/ionq.com" onerror="this.style.display='none'"><span class="pos-name-lbl">IonQ <span class="pos-name-ticker">(IONQ)</span></span></div>
@@ -1729,7 +1576,6 @@
     </div>
 
     <!-- IREN -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-IREN" src="https://logo.clearbit.com/iren.com" onerror="this.style.display='none'"><span class="pos-name-lbl">IREN <span class="pos-name-ticker">(IREN)</span></span></div>
@@ -1743,7 +1589,6 @@
     </div>
 
     <!-- Microsoft -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-MSFT" src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Microsoft <span class="pos-name-ticker">(MSFT)</span></span></div>
@@ -1757,7 +1602,6 @@
     </div>
 
     <!-- Nu Holdings -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-NU" src="https://logo.clearbit.com/nubank.com.br" onerror="this.style.display='none'"><span class="pos-name-lbl">Nu Holdings <span class="pos-name-ticker">(NU)</span></span></div>
@@ -1771,7 +1615,6 @@
     </div>
 
     <!-- Netflix -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-NFLX" src="https://logo.clearbit.com/netflix.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Netflix <span class="pos-name-ticker">(NFLX)</span></span></div>
@@ -1785,7 +1628,6 @@
     </div>
 
     <!-- D-Wave Quantum -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-QBTS" src="https://logo.clearbit.com/dwavesys.com" onerror="this.style.display='none'"><span class="pos-name-lbl">D-Wave Quantum <span class="pos-name-ticker">(QBTS)</span></span></div>
@@ -1799,7 +1641,6 @@
     </div>
 
     <!-- Defiance Quantum ETF -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-QTUM" src="https://logo.clearbit.com/defianceetfs.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Defiance Quantum ETF <span class="pos-name-ticker">(QTUM)</span></span></div>
@@ -1813,7 +1654,6 @@
     </div>
 
     <!-- Rigetti -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-RGTI" src="https://logo.clearbit.com/rigetti.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Rigetti Computing <span class="pos-name-ticker">(RGTI)</span></span></div>
@@ -1827,7 +1667,6 @@
     </div>
 
     <!-- SoFi -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-SOFI" src="https://logo.clearbit.com/sofi.com" onerror="this.style.display='none'"><span class="pos-name-lbl">SoFi Technologies <span class="pos-name-ticker">(SOFI)</span></span></div>
@@ -1841,7 +1680,6 @@
     </div>
 
     <!-- Siemens -->
-
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-SIEGY" src="https://logo.clearbit.com/siemens.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Siemens AG <span class="pos-name-ticker">(SIEGY)</span></span></div>
@@ -1854,26 +1692,30 @@
       <p class="pos-thesis">"Industrial automation + electrification + digital infrastructure — a quality compounder at the intersection of industrial AI and energy transition. Watching European capex cycle and factory automation demand."</p>
     </div>
 
-    <!-- Siemens Energy -->
-
+    <!-- Schneider Electric -->
     <div class="pos-card watch rev card-watch">
       <div class="pos-card-head">
-        <div class="pos-ticker-row"><img class="asset-logo" id="logo-SMNEY" src="https://logo.clearbit.com/siemens-energy.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Siemens Energy <span class="pos-name-ticker">(SMNEY)</span></span></div>
+        <div class="pos-ticker-row"><img class="asset-logo" id="logo-SMEGF" src="https://logo.clearbit.com/se.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Schneider Electric <span class="pos-name-ticker">(SMEGF)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
       </div>
       <div class="pos-price-row">
-        <div id="price-SMNEY" class="pos-price clr-pu">—</div>
-        <span id="chg-SMNEY" class="pos-chg clr-pu">—</span>
+        <div id="price-SMEGF" class="pos-price clr-pu">—</div>
+        <span id="chg-SMEGF" class="pos-chg clr-pu">—</span>
       </div>
-      <p class="pos-thesis">"Grid infrastructure, power transmission, and offshore wind at global scale. Direct beneficiary of the AI data center power buildout and European energy independence push. Watching order book growth and grid modernization contract cadence."</p>
+      <p class="pos-thesis">"Energy management and industrial automation at global scale. Direct beneficiary of the AI data center power infrastructure buildout. Watching data center order flow and European energy policy tailwinds."</p>
     </div>
-        </div>
-      </div>
 
-      <div class="cat-group" data-cat="commodity">
-        <div class="cat-divider"><span class="cat-divider-tag block-commodity">COMMODITIES</span><span class="cat-divider-count">3 assets</span></div>
-        <div class="pos-grid">
-        <div class="pos-card watch rev card-commodity">
+  </div>
+
+  <!-- COMMODITIES BLOCK -->
+  <div class="pos-block-label rev">
+    <span class="block-tag block-commodity">COMMODITIES</span>
+    <span class="block-count">3 assets</span>
+  </div>
+  <div class="pos-grid pos-grid-watch">
+
+    <!-- Gold -->
+    <div class="pos-card watch rev card-commodity">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-XAUUSD" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Gold_nugget_%28placer%29_%28Yukon%2C_Canada%29_3.jpg/120px-Gold_nugget_%28placer%29_%28Yukon%2C_Canada%29_3.jpg" style="border-radius:50%;object-fit:cover;width:28px;height:28px;" onerror="this.style.display='none'"><span class="pos-name-lbl">Gold <span class="pos-name-ticker">(XAU/USD)</span></span></div>
         <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
@@ -1886,7 +1728,6 @@
     </div>
 
     <!-- Copper -->
-
     <div class="pos-card watch rev card-commodity">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-XCUUSD" src="" style="display:none;" onerror="this.style.display='none'"><span class="pos-name-lbl">Copper <span class="pos-name-ticker">(XCU/USD)</span></span></div>
@@ -1900,7 +1741,6 @@
     </div>
 
     <!-- Palladium -->
-
     <div class="pos-card watch rev card-commodity">
       <div class="pos-card-head">
         <div class="pos-ticker-row"><img class="asset-logo" id="logo-XPDUSD" src="" style="display:none;" onerror="this.style.display='none'"><span class="pos-name-lbl">Palladium <span class="pos-name-ticker">(XPD/USD)</span></span></div>
@@ -1911,11 +1751,10 @@
         <span id="chg-XPDUSD" class="pos-chg" style="color:#CD853F;">—</span>
       </div>
       <p class="pos-thesis">"Platinum-group metal with supply concentrated in Russia and South Africa — a direct geopolitical risk asset. Autocatalyst demand is the floor, green hydrogen optionality is the upside. Watching supply disruption signals."</p>
-        </div>
-      </div>
-
     </div>
+
   </div>
+
 </section>
 
 <!-- MODELS -->
@@ -2313,7 +2152,7 @@ window.addEventListener('scroll', () => {
 
   const EQUITIES = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY',
                     'AAPL','AMD','ASTS','AVGO','BE','CLSK','CRWV','CVX','DDOG',
-                    'BLSH','IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMNEY'];
+                    'IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMEGF'];
 
   // ─── STATE ──────────────────────────────────────────────────
   const prevPrice  = {};
@@ -2558,68 +2397,6 @@ window.addEventListener('scroll', () => {
       console.warn('[TZ] CoinGecko logos error:', e.message);
     }
   }
-
-  // ─── COMMODITIES: FINNHUB OANDA SPOT PRICES ─────────────────────
-  // Uses Finnhub's OANDA forex feed — same key, actual spot prices.
-  // OANDA:XAU_USD = Gold spot ($/troy oz)
-  // OANDA:XCU_USD = Copper spot ($/lb)
-  // OANDA:XPD_USD = Palladium spot ($/troy oz)
-  // Falls back to corrected ETF scale factors if OANDA returns no data.
-  const METALS_INTERVAL = 60000;
-
-  const COMMODITY_MAP = [
-    { oanda: 'OANDA:XAU_USD', etf: 'GLD',  etfScale: 10.77, ticker: 'XAUUSD', name: 'Gold'      },
-    { oanda: 'OANDA:XCU_USD', etf: 'CPER', etfScale: 1,     ticker: 'XCUUSD', name: 'Copper'    },
-    { oanda: 'OANDA:XPD_USD', etf: 'PALL', etfScale: 10,    ticker: 'XPDUSD', name: 'Palladium' },
-  ];
-
-  async function fetchOneSpot(symbol) {
-    const r = await fetch(
-      'https://finnhub.io/api/v1/quote?symbol=' + encodeURIComponent(symbol) + '&token=' + FINNHUB_KEY
-    );
-    if (!r.ok) throw new Error(r.status);
-    const d = await r.json();
-    if (!d || !d.c || d.c === 0) throw new Error('no data');
-    return d;
-  }
-
-  async function fetchMetals() {
-    for (const { oanda, etf, etfScale, ticker, name } of COMMODITY_MAP) {
-      try {
-        // Try OANDA spot first — actual price, no scale factor needed
-        let d, scale = 1;
-        try {
-          d = await fetchOneSpot(oanda);
-        } catch (_) {
-          // OANDA unavailable on this plan — fall back to ETF with correct scale
-          d = await fetchOneSpot(etf);
-          scale = etfScale;
-          console.log('[TZ] ' + name + ': using ETF fallback (' + etf + ' ×' + etfScale + ')');
-        }
-
-        const price = d.c  * scale;
-        const prev  = d.pc * scale;
-        const up    = price >= prev;
-        const chg   = prev ? ((d.c - d.pc) / d.pc) * 100 : 0;
-
-        const pEl = document.getElementById('price-' + ticker);
-        const cEl = document.getElementById('chg-'   + ticker);
-        if (!pEl) continue;
-
-        pEl.textContent = '$' + price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        pEl.style.color = up ? '#CD853F' : '#b05a20';
-
-        if (cEl) {
-          cEl.textContent = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
-          cEl.style.color = up ? '#CD853F' : '#b05a20';
-        }
-      } catch (e) {
-        console.warn('[TZ] Commodity fetch failed (' + name + '):', e.message);
-      }
-    }
-    stampTime();
-  }
-
   // ─── BOOTSTRAP ───────────────────────────────────────────────
   function init() {
     // Crypto — seed prices + logos immediately
@@ -2635,10 +2412,6 @@ window.addEventListener('scroll', () => {
     setInterval(() => {
       if (!finnhubAlive) fetchAllEquitiesREST();
     }, REST_FALLBACK_INTERVAL);
-
-    // Commodities — metals.live spot prices
-    fetchMetals();
-    setInterval(fetchMetals, METALS_INTERVAL);
   }
 
   if (document.readyState === 'loading') {
@@ -2650,51 +2423,5 @@ window.addEventListener('scroll', () => {
 })();
 </script>
 
-
-<script>
-  // ─── TABS + COLLAPSE ──────────────────────────────────────────────────────
-
-  function initTabs(tabBarId, bodyId) {
-    const bar  = document.getElementById(tabBarId);
-    const body = document.getElementById(bodyId);
-    if (!bar || !body) return;
-
-    bar.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        // Active state
-        bar.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const tab = btn.dataset.tab;
-
-        body.querySelectorAll('.cat-group').forEach(group => {
-          if (tab === 'all' || group.dataset.cat === tab) {
-            group.classList.remove('hidden');
-          } else {
-            group.classList.add('hidden');
-          }
-        });
-      });
-    });
-  }
-
-  function initCollapse(btnSelector, bodyId) {
-    const btn  = document.querySelector(btnSelector);
-    const body = document.getElementById(bodyId);
-    if (!btn || !body) return;
-
-    btn.addEventListener('click', () => {
-      const collapsed = body.classList.toggle('collapsed');
-      btn.classList.toggle('collapsed', collapsed);
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    initTabs('tabs-positions', 'body-positions');
-    initTabs('tabs-watchlist', 'body-watchlist');
-    initCollapse('[data-target="body-positions"]', 'body-positions');
-    initCollapse('[data-target="body-watchlist"]',  'body-watchlist');
-  });
-</script>
 </body>
 </html>
