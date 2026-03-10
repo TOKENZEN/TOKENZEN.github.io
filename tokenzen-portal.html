@@ -524,6 +524,11 @@
       border: 1px solid rgba(155,126,200,0.25);
       color: var(--purple-bright);
     }
+    .block-watch {
+      background: rgba(255,170,0,0.06);
+      border: 1px solid rgba(255,170,0,0.25);
+      color: #FFAA00;
+    }
     .block-count {
       font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
@@ -532,6 +537,7 @@
     }
     .pos-grid-crypto { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
     .pos-grid-eq { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+    .pos-grid-watch { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
 
     /* ── MODELS ── */
     .models-s { background: linear-gradient(180deg, var(--bg-0) 0%, #0A0A15 100%); }
@@ -1341,6 +1347,288 @@
     </div>
 
   </div>
+
+  <!-- WATCHLIST BLOCK -->
+  <div class="pos-block-label rev">
+    <span class="block-tag block-watch">WATCHLIST</span>
+    <span class="block-count">21 assets</span>
+  </div>
+  <div class="pos-grid pos-grid-watch">
+
+    <!-- Apple -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/apple.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Apple <span class="pos-name-ticker">(AAPL)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-AAPL" class="pos-price clr-pu">—</div>
+        <span id="chg-AAPL" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Services flywheel + 2.2B active devices. Waiting for AI hardware supercycle catalyst. Apple Intelligence monetization is the unlock — not yet priced at current multiples."</p>
+    </div>
+
+    <!-- AMD -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/amd.com" onerror="this.style.display='none'"><span class="pos-name-lbl">AMD <span class="pos-name-ticker">(AMD)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-AMD" class="pos-price clr-pu">—</div>
+        <span id="chg-AMD" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Best credible alternative to NVDA for GPU compute. MI300X gaining enterprise traction. Waiting for sustained data center backlog confirmation before upgrading conviction."</p>
+    </div>
+
+    <!-- AST SpaceMobile -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/ast-science.com" onerror="this.style.display='none'"><span class="pos-name-lbl">AST SpaceMobile <span class="pos-name-ticker">(ASTS)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-ASTS" class="pos-price clr-pu">—</div>
+        <span id="chg-ASTS" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Direct-to-device satellite connectivity that could disrupt mobile networks at a global scale. Watching commercial service launch milestones and carrier partnership announcements."</p>
+    </div>
+
+    <!-- Broadcom -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/broadcom.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Broadcom <span class="pos-name-ticker">(AVGO)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-AVGO" class="pos-price clr-pu">—</div>
+        <span id="chg-AVGO" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Custom AI chip agreements with Alphabet and Meta represent a $60–90B ASIC revenue opportunity. Monitoring Q2 AI revenue guidance for the entry signal."</p>
+    </div>
+
+    <!-- Bloom Energy -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/bloomenergy.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Bloom Energy <span class="pos-name-ticker">(BE)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-BE" class="pos-price clr-pu">—</div>
+        <span id="chg-BE" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Fuel cell power infrastructure for AI data centers — a direct play on the energy demand crisis that every hyperscaler is navigating. Watching customer contract cadence and gross margin trajectory."</p>
+    </div>
+
+    <!-- Bullish -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/bullish.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Bullish <span class="pos-name-ticker">(PRIVATE)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div class="pos-price clr-pu" style="font-size:18px;letter-spacing:0.06em;line-height:1.6;">UNLISTED</div>
+      </div>
+      <p class="pos-thesis">"Institutional-grade crypto exchange backed by Peter Thiel. Watching for public listing event as a potential pure-play CEX infrastructure bet with regulated credentials."</p>
+    </div>
+
+    <!-- CleanSpark -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/cleanspark.com" onerror="this.style.display='none'"><span class="pos-name-lbl">CleanSpark <span class="pos-name-ticker">(CLSK)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-CLSK" class="pos-price clr-pu">—</div>
+        <span id="chg-CLSK" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Bitcoin miner with US-based efficient fleet. High beta to BTC price — watching hash rate growth, energy cost per coin, and post-halving unit economics before sizing."</p>
+    </div>
+
+    <!-- CoreWeave -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/coreweave.com" onerror="this.style.display='none'"><span class="pos-name-lbl">CoreWeave <span class="pos-name-ticker">(CRWV)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-CRWV" class="pos-price clr-pu">—</div>
+        <span id="chg-CRWV" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"GPU cloud purpose-built for AI workloads — a direct structural alternative to AWS and Azure for AI-native customers. Monitoring revenue growth, customer concentration, and post-IPO lock-up dynamics."</p>
+    </div>
+
+    <!-- Chevron -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/chevron.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Chevron <span class="pos-name-ticker">(CVX)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-CVX" class="pos-price clr-pu">—</div>
+        <span id="chg-CVX" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Energy hedge against geopolitical risk and stagflation scenario. Strong balance sheet + dividend yield. Watching for macro rotation into defensives and oil price regime shift."</p>
+    </div>
+
+    <!-- Datadog -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/datadoghq.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Datadog <span class="pos-name-ticker">(DDOG)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-DDOG" class="pos-price clr-pu">—</div>
+        <span id="chg-DDOG" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Observability and security platform for AI-native infrastructure. High NRR, expanding platform surface. Watching AI product upsell metrics and net new ARR in upcoming earnings."</p>
+    </div>
+
+    <!-- IonQ -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/ionq.com" onerror="this.style.display='none'"><span class="pos-name-lbl">IonQ <span class="pos-name-ticker">(IONQ)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-IONQ" class="pos-price clr-pu">—</div>
+        <span id="chg-IONQ" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Pure-play trapped-ion quantum computing with real government and enterprise contracts. High-risk, long-duration bet on quantum advantage timeline. Watching error rate milestones and contract pipeline."</p>
+    </div>
+
+    <!-- IREN -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/iren.com" onerror="this.style.display='none'"><span class="pos-name-lbl">IREN <span class="pos-name-ticker">(IREN)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-IREN" class="pos-price clr-pu">—</div>
+        <span id="chg-IREN" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Bitcoin miner with renewable energy focus. Post-halving efficiency is the differentiator. Watching BTC hash rate, power cost per coin, and balance sheet management."</p>
+    </div>
+
+    <!-- Microsoft -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/microsoft.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Microsoft <span class="pos-name-ticker">(MSFT)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-MSFT" class="pos-price clr-pu">—</div>
+        <span id="chg-MSFT" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Copilot monetization + Azure AI + OpenAI equity stake = unmatched enterprise AI distribution. Watching for AI revenue inflection in quarterly results to justify re-entry at current multiple."</p>
+    </div>
+
+    <!-- Nu Holdings -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/nubank.com.br" onerror="this.style.display='none'"><span class="pos-name-lbl">Nu Holdings <span class="pos-name-ticker">(NU)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-NU" class="pos-price clr-pu">—</div>
+        <span id="chg-NU" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Digital bank for 100M+ LatAm customers. Credit cycle and Brazil FX risk are the swing factors. Watching NIM expansion, credit quality, and macro regime in Brazil."</p>
+    </div>
+
+    <!-- Netflix -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/netflix.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Netflix <span class="pos-name-ticker">(NFLX)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-NFLX" class="pos-price clr-pu">—</div>
+        <span id="chg-NFLX" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Ad-supported tier + live events + password sharing crackdown = durable top-line growth. Watching ad revenue as a percentage of total and live sports monetization cadence."</p>
+    </div>
+
+    <!-- D-Wave Quantum -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/dwavesys.com" onerror="this.style.display='none'"><span class="pos-name-lbl">D-Wave Quantum <span class="pos-name-ticker">(QBTS)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-QBTS" class="pos-price clr-pu">—</div>
+        <span id="chg-QBTS" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Annealing quantum systems with real commercial deployments today. Nearest-term revenue path in the quantum computing cluster. Nearest to an actual enterprise use case at scale."</p>
+    </div>
+
+    <!-- Defiance Quantum ETF -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/defianceetfs.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Defiance Quantum ETF <span class="pos-name-ticker">(QTUM)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-QTUM" class="pos-price clr-pu">—</div>
+        <span id="chg-QTUM" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Basket exposure to quantum computing and AI hardware names. Useful as a thematic hedge before picking individual quantum winners. Watching for sector-wide narrative rotation."</p>
+    </div>
+
+    <!-- Rigetti -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/rigetti.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Rigetti Computing <span class="pos-name-ticker">(RGTI)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-RGTI" class="pos-price clr-pu">—</div>
+        <span id="chg-RGTI" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Superconducting quantum chips — more speculative than IonQ. High beta to any major quantum computing headline. Waiting for gate fidelity milestones before taking a position."</p>
+    </div>
+
+    <!-- SoFi -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/sofi.com" onerror="this.style.display='none'"><span class="pos-name-lbl">SoFi Technologies <span class="pos-name-ticker">(SOFI)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-SOFI" class="pos-price clr-pu">—</div>
+        <span id="chg-SOFI" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Full-stack digital bank — loans, credit cards, brokerage, crypto on one platform. Watching student loan demand recovery, deposit growth trajectory, and the path to sustained profitability."</p>
+    </div>
+
+    <!-- Siemens -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/siemens.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Siemens AG <span class="pos-name-ticker">(SIEGY)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-SIEGY" class="pos-price clr-pu">—</div>
+        <span id="chg-SIEGY" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Industrial automation + electrification + digital infrastructure — a quality compounder at the intersection of industrial AI and energy transition. Watching European capex cycle and factory automation demand."</p>
+    </div>
+
+    <!-- Schneider Electric -->
+    <div class="pos-card watch rev">
+      <div class="pos-card-head">
+        <div class="pos-ticker-row"><img class="asset-logo" src="https://logo.clearbit.com/se.com" onerror="this.style.display='none'"><span class="pos-name-lbl">Schneider Electric <span class="pos-name-ticker">(SMEGF)</span></span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span class="badge b-watch">WATCHING</span></div>
+      </div>
+      <div class="pos-price-row">
+        <div id="price-SMEGF" class="pos-price clr-pu">—</div>
+        <span id="chg-SMEGF" class="pos-chg clr-pu">—</span>
+      </div>
+      <p class="pos-thesis">"Energy management and industrial automation at global scale. Direct beneficiary of the AI data center power infrastructure buildout. Watching data center order flow and European energy policy tailwinds."</p>
+    </div>
+
+  </div>
+
 </section>
 
 <!-- MODELS -->
@@ -1736,7 +2024,9 @@ window.addEventListener('scroll', () => {
     PUMP : 'pump-fun',
   };
 
-  const EQUITIES = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY'];
+  const EQUITIES = ['TSLA','PLTR','COIN','NVDA','CRCL','RKLB','HOOD','AMZN','GOOGL','META','GLXY',
+                    'AAPL','AMD','ASTS','AVGO','BE','CLSK','CRWV','CVX','DDOG',
+                    'IONQ','IREN','MSFT','NU','NFLX','QBTS','QTUM','RGTI','SOFI','SIEGY','SMEGF'];
 
   // ─── STATE ──────────────────────────────────────────────────
   const prevPrice  = {};
